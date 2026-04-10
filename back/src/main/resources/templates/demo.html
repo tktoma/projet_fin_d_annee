@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Tailwind + Spring Boot</title>
+    <link href="/css/output.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold text-gray-900">Spring Boot + Tailwind CSS</h1>
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-yellow-500"></i>
+                    <span class="text-sm text-gray-600">Demo Application</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="space-y-8">
+            <!-- Card Example -->
+            <div class="card p-6">
+                <h2 class="text-xl font-semibold mb-4">Carte d'exemple</h2>
+                <p class="text-gray-600 mb-4">Ceci est une démonstration de Tailwind CSS intégré avec Spring Boot et Thymeleaf.</p>
+                
+                <!-- Buttons -->
+                <div class="flex space-x-4 mb-6">
+                    <button class="btn btn-primary px-4 py-2">
+                        <i data-lucide="check" class="w-4 h-4 mr-2"></i>
+                        Bouton primaire
+                    </button>
+                    <button class="btn btn-secondary px-4 py-2">
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+                        Bouton secondaire
+                    </button>
+                    <button class="btn btn-outline px-4 py-2">
+                        <i data-lucide="download" class="w-4 h-4 mr-2"></i>
+                        Bouton outline
+                    </button>
+                </div>
+
+                <!-- Form Example -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium">Formulaire d'exemple</h3>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                        <input type="text" class="input" placeholder="Entrez votre nom">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" class="input" placeholder="Entrez votre email">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-4">
+                    <div class="flex items-center mb-2">
+                        <i data-lucide="home" class="w-5 h-5 mr-2 text-blue-500"></i>
+                        <h3 class="font-medium">Service 1</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">Description du premier service avec icône Lucide.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center mb-2">
+                        <i data-lucide="settings" class="w-5 h-5 mr-2 text-green-500"></i>
+                        <h3 class="font-medium">Service 2</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">Description du deuxième service avec icône Lucide.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center mb-2">
+                        <i data-lucide="user" class="w-5 h-5 mr-2 text-purple-500"></i>
+                        <h3 class="font-medium">Service 3</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">Description du troisième service avec icône Lucide.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialiser les icônes Lucide
+        lucide.createIcons();
+        
+        // Exemple d'animation simple (simulé Framer Motion)
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
