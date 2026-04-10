@@ -3,6 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import './input.css'
+import TestComponents from './TestComponents'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -114,6 +116,11 @@ function App() {
 
       <div className="ticks"></div>
       <section id="spacer"></section>
+
+      {/* Section de test des composants */}
+      <div className="container mx-auto py-8">
+        <TestComponents />
+      </div>
     </>
   )
 }
