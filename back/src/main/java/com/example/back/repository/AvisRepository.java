@@ -1,0 +1,18 @@
+package com.example.back.repository;
+
+import com.example.back.entities.Avis;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface AvisRepository
+        extends JpaRepository<Avis, Long> {
+
+    List<Avis> findByJeuId(Long jeuId);
+    List<Avis> findByUtilisateurId(Long utilisateurId);
+    Optional<Avis> findByUtilisateurIdAndJeuId(
+            Long utilisateurId, Long jeuId);
+}

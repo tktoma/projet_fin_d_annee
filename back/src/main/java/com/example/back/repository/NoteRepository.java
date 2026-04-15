@@ -1,0 +1,26 @@
+package com.example.back.repository;
+
+import com.example.back.entities.Note;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface NoteRepository
+        extends JpaRepository<Note, Long> {
+
+    List<Note> findByJeuId(Long jeuId);
+    List<Note> findByUtilisateurId(Long utilisateurId);
+    Optional<Note> findByUtilisateurIdAndJeuId(
+            Long utilisateurId, Long jeuId);
+    boolean existsByUtilisateurIdAndJeuId(
+            Long utilisateurId, Long jeuId);
+
+    // Calcul de la moyenne des notes d'un jeu
+    @Query("SELECT AVG(n.valeur) FROM Note n WHERE n.jeu.id = :jeuId")
+    Optional<Float> calculerMoyenne(@Param("jeuId") Long jeuId);
+}

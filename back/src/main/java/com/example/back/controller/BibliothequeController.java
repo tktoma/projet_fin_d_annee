@@ -1,0 +1,70 @@
+package com.example.back.controller;
+
+import com.example.back.entities.Bibliotheque;
+import com.example.back.entities.StatutJeu;
+import com.example.back.entities.Utilisateur;
+import com.example.back.service.BibliothequeService;
+import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/bibliotheque")
+public class BibliothequeController {
+
+    private final BibliothequeService bibliothequeService;
+
+    public BibliothequeController(
+            BibliothequeService bibliothequeService) {
+        this.bibliothequeService = bibliothequeService;
+    }
+
+    @PostMapping("/jeu/{jeuId}")
+    public ResponseEntity<Bibliotheque> ajouterJeu(
+            @PathVariable Long jeuId,
+            @RequestParam StatutJeu statut,
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        return ResponseEntity.ok(
+                bibliothequeService.ajouterJeu(u, jeuId, statut));
+    }
+
+    @PutMapping("/jeu/{jeuId}/statut")
+    public ResponseEntity<Bibliotheque> changerStatut(
+            @PathVariable Long jeuId,
+            @RequestParam StatutJeu statut,
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        return ResponseEntity.ok(
+                bibliothequeService.changerStatut(u, jeuId, statut));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Bibliotheque>> maBibliotheque(
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        return ResponseEntity.ok(
+                bibliothequeService.getBibliotheque(u.getId()));
+    }
+
+    @GetMapping("/statut/{statut}")
+    public ResponseEntity<List<Bibliotheque>> parStatut(
+            @PathVariable StatutJeu statut,
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        return ResponseEntity.ok(
+                bibliothequeService.getBibliothequeParStatut(
+                        u.getId(), statut));
+    }
+
+    @DeleteMapping("/jeu/{jeuId}")
+    public ResponseEntity<Void> supprimer(
+            @PathVariable Long jeuId,
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        bibliothequeService.supprimerJeu(u, jeuId);
+        return ResponseEntity.noContent().build();
+    }
+}
