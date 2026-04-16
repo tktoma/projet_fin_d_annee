@@ -6,6 +6,7 @@
 doc/insomnia.exe
 doc/Insomnia.Core-12.5.0.exe
 doc/*.exe
+**/node/node.exe
 
 # Java/Maven (Back)
 HELP.md
