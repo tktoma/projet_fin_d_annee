@@ -2,6 +2,7 @@ package com.example.back.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,12 +38,16 @@ public class SecurityConfig {
                                 SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api/jeux/recherche",
-                                "/api/avis/jeu/**",
-                                "/api/notes/jeu/**"
-                        ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/jeux/recherche").permitAll() // ← méthode HTTP explicite
+                        .requestMatchers(HttpMethod.GET, "/api/jeux").permitAll()            // ← liste publique
+                        .requestMatchers(HttpMethod.GET, "/api/jeux/**").permitAll()         // ← détail public
+
+                        .requestMatchers(HttpMethod.GET, "/api/avis/jeu/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/notes/jeu/**").permitAll()
+
                         // Tout le reste → token requis
                         .anyRequest().authenticated()
                 )

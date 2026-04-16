@@ -17,7 +17,7 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @Version
     private int version;

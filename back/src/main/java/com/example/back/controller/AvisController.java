@@ -22,7 +22,7 @@ public class AvisController {
     @PostMapping("/jeu/{jeuId}")
     public ResponseEntity<Avis> ajouterAvis(
             @PathVariable Long jeuId,
-            @RequestParam String texte,
+            @RequestBody String texte,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
         return ResponseEntity.ok(

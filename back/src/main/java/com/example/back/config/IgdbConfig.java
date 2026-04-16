@@ -1,8 +1,10 @@
 package com.example.back.config;
 
+import com.example.back.service.TwitchTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
@@ -17,31 +19,19 @@ public class IgdbConfig {
     private String clientSecret;
 
     @Bean
-    public WebClient igdbWebClient() {
-        // 1. On récupère le token Twitch
-        String token = fetchTwitchToken();
-
-        // 2. On configure le WebClient avec les headers IGDB
+    public WebClient igdbWebClient(TwitchTokenService twitchTokenService) {
         return WebClient.builder()
                 .baseUrl("https://api.igdb.com/v4")
                 .defaultHeader("Client-ID", clientId)
-                .defaultHeader("Authorization", "Bearer " + token)
+                .filter((request, next) -> {
+                    // ← token récupéré dynamiquement à CHAQUE requête
+                    ClientRequest newRequest = ClientRequest.from(request)
+                            .header("Authorization",
+                                    "Bearer " + twitchTokenService.getCurrentToken())
+                            .build();
+                    return next.exchange(newRequest);
+                })
                 .build();
     }
 
-    private String fetchTwitchToken() {
-        String url = "https://id.twitch.tv/oauth2/token"
-                + "?client_id=" + clientId
-                + "&client_secret=" + clientSecret
-                + "&grant_type=client_credentials";
-
-        Map response = WebClient.create()
-                .post()
-                .uri(url)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
-
-        return (String) response.get("access_token");
-    }
 }

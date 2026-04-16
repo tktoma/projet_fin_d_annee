@@ -58,7 +58,7 @@ public class AvisService {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->
                         new RuntimeException("Avis introuvable"));
-        if (avis.getUtilisateur().getId() != utilisateur.getId()) {
+        if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
             throw new RuntimeException("Non autorisé");
         }
         avisRepository.delete(avis);

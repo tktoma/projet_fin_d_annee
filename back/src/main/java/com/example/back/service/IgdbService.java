@@ -23,14 +23,12 @@ public class IgdbService {
 
     private final WebClient igdbWebClient;
     private final JeuRepository jeuRepository;
-    private final TwitchTokenService twitchTokenService;
 
     public IgdbService(WebClient igdbWebClient,
                        JeuRepository jeuRepository,
                        TwitchTokenService twitchTokenService) {
         this.igdbWebClient = igdbWebClient;
         this.jeuRepository = jeuRepository;
-        this.twitchTokenService = twitchTokenService;
     }
     // Recherche live sur IGDB (pas de sauvegarde)
     public List<IgdbGameDto> rechercherJeu(String titre) {
@@ -42,8 +40,6 @@ public class IgdbService {
 
         return igdbWebClient.post()
                 .uri("/search")
-                .header("Client-ID", igdbClientId)
-                .header("Authorization", "Bearer " + twitchTokenService.getCurrentToken())
                 .bodyValue(body)
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
@@ -74,7 +70,10 @@ public class IgdbService {
                 .bodyValue(body)
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
-                .blockFirst();
+                .next()
+                .blockOptional()
+                .orElseThrow(() -> new RuntimeException(
+                        "Jeu IGDB introuvable : " + igdbId));
 
         Jeu jeu = new Jeu();
         jeu.setTitre(dto.getName());
@@ -120,9 +119,7 @@ public class IgdbService {
 
         List<IgdbGameDto> jeuxIgdb = igdbWebClient.post()
                 .uri("/games")
-                .header("Client-ID", igdbClientId)
-                .header("Authorization", "Bearer " + twitchTokenService.getCurrentToken())
-                .bodyValue(body)
+                .bodyValue(body)   // ← utilise les defaultHeaders du WebClient, donc le token figé
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
                 .collectList()

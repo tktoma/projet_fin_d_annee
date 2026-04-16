@@ -1,6 +1,8 @@
 package com.example.back.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class TwitchTokenService {
     @Value("${igdb.client-secret}")
     private String clientSecret;
 
-    public TwitchTokenService(WebClient webClient) {
+    public TwitchTokenService(@Qualifier("webClient") WebClient webClient) {
         this.webClient = webClient;
     }
 
@@ -71,8 +73,12 @@ public class TwitchTokenService {
 
     // DTO pour la réponse de l'API Twitch
     private static class TwitchTokenResponse {
+        @JsonProperty("access_token")
         private String access_token;
+
+        @JsonProperty("expires_in")
         private int expires_in;
+
         private String token_type;
 
         public String getAccessToken() { return access_token; }

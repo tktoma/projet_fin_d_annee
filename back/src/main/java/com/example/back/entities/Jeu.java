@@ -27,7 +27,7 @@ public class Jeu extends BaseEntity{
     private LocalDate dateSortie;
     @Column
     private String source;
-    @Column(nullable = false, precision = 2, length = 2)
+    @Column(nullable = false, precision = 2)
     private float noteMoyenne;
     @Column
     private String source_IGBD;         // ex: "igdb"
