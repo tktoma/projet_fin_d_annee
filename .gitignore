@@ -4,6 +4,8 @@
 *.so
 *.dylib
 doc/insomnia.exe
+doc/Insomnia.Core-12.5.0.exe
+doc/*.exe
 
 # Java/Maven (Back)
 HELP.md
