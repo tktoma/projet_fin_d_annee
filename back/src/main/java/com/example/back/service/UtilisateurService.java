@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class UtilisateurService {
@@ -48,10 +49,18 @@ public class UtilisateurService {
         utilisateurRepository.save(utilisateur);
 
         String token = jwtUtil.generateToken(utilisateur);
+        String refreshToken = jwtUtil.generateRefreshToken();
+        utilisateur.setRefreshToken(refreshToken);
+        utilisateur.setRefreshTokenExpiration(LocalDateTime.now().plusDays(30));
+        utilisateurRepository.save(utilisateur);
+
         return new AuthResponse(
                 token,
+                refreshToken,
                 utilisateur.getPseudo(),
                 utilisateur.getId());
+
+
     }
 
     // Connexion
@@ -68,8 +77,40 @@ public class UtilisateurService {
         }
 
         String token = jwtUtil.generateToken(utilisateur);
+        String refreshToken = jwtUtil.generateRefreshToken();
+        utilisateur.setRefreshToken(refreshToken);
+        utilisateur.setRefreshTokenExpiration(LocalDateTime.now().plusDays(30));
+        utilisateurRepository.save(utilisateur);
+
         return new AuthResponse(
                 token,
+                refreshToken,
+                utilisateur.getPseudo(),
+                utilisateur.getId());
+    }
+    public AuthResponse refreshToken(String refreshToken) {
+        if (!jwtUtil.validateRefreshToken(refreshToken)) {
+            throw new RuntimeException("Refresh token invalide");
+        }
+
+        Utilisateur utilisateur = utilisateurRepository
+                .findByRefreshToken(refreshToken)
+                .orElseThrow(() ->
+                        new RuntimeException("Refresh token introuvable"));
+
+        if (utilisateur.getRefreshTokenExpiration().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Refresh token expiré");
+        }
+
+        String newToken = jwtUtil.generateToken(utilisateur);
+        String newRefreshToken = jwtUtil.generateRefreshToken();
+        utilisateur.setRefreshToken(newRefreshToken);
+        utilisateur.setRefreshTokenExpiration(LocalDateTime.now().plusDays(30));
+        utilisateurRepository.save(utilisateur);
+
+        return new AuthResponse(
+                newToken,
+                newRefreshToken,
                 utilisateur.getPseudo(),
                 utilisateur.getId());
     }

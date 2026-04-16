@@ -9,6 +9,9 @@ import java.util.List;
 @Data  // génère tous les getters/setters automatiquement
 public class IgdbGameDto {
 
+    @JsonProperty("id")
+    private Long id;
+
     @JsonProperty("name")
     private String name;
 

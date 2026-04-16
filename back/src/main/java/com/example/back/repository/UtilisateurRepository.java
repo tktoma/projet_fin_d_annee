@@ -14,4 +14,5 @@ public interface UtilisateurRepository
     Optional<Utilisateur> findByPseudo(String pseudo);
     boolean existsByEmail(String email);
     boolean existsByPseudo(String pseudo);
+    Optional<Utilisateur> findByRefreshToken(String refreshToken);
 }

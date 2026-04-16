@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.dto.AuthResponse;
 import com.example.back.dto.LoginRequest;
+import com.example.back.dto.RefreshRequest;
 import com.example.back.dto.RegisterRequest;
 import com.example.back.service.UtilisateurService;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,11 @@ public class AuthController {
             @RequestBody LoginRequest request) {
         return ResponseEntity.ok(
                 utilisateurService.connecter(request));
+    }
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(
+            @RequestBody RefreshRequest refreshRequest) {
+        return ResponseEntity.ok(
+                utilisateurService.refreshToken(refreshRequest.getRefreshToken()));
     }
 }

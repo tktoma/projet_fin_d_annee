@@ -2,6 +2,7 @@ package com.example.back.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -25,7 +27,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    @Bean// active @PreAuthorize dans les controllers
     public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
         http
@@ -34,14 +36,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Routes publiques
+                        // Public
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/jeux/**",
-                                "/api/avis/jeu/**",   // lecture publique des avis
-                                "/api/notes/jeu/**"   // lecture publique des notes
+                                "/api/jeux/recherche",
+                                "/api/avis/jeu/**",
+                                "/api/notes/jeu/**"
                         ).permitAll()
-                        // Tout le reste nécessite un token
+                        // Tout le reste → token requis
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter,

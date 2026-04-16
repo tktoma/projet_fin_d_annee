@@ -16,6 +16,8 @@ public class JwtUtil {
     private String secret;
     @Value("${jwt.expiration}")
     private Long expiration;
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshExpiration;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
@@ -27,6 +29,7 @@ public class JwtUtil {
                 .setSubject(utilisateur.getEmail())
                 .claim("id", utilisateur.getId())
                 .claim("pseudo", utilisateur.getPseudo())
+                .claim("role", utilisateur.getRole().name()) // ajout
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(
                         System.currentTimeMillis() + expiration))
@@ -46,6 +49,25 @@ public class JwtUtil {
 
     // Valide le token
     public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public String generateRefreshToken() {
+        return Jwts.builder()
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(
+                        System.currentTimeMillis() + refreshExpiration))
+                .signWith(getSigningKey())
+                .compact();
+    }
+    public boolean validateRefreshToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
