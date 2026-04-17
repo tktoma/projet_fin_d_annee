@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Map;
-
 @Configuration
 public class IgdbConfig {
 

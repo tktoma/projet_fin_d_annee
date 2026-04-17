@@ -1,10 +1,11 @@
 package com.example.back.controller;
 
 import com.example.back.dto.ErrorResponse;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@Profile("dev")
 @RestController
 @RequestMapping("/api/test")
 public class TestController {

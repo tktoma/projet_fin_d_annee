@@ -1,6 +1,6 @@
 package com.example.back.controller;
 
-import com.example.back.entities.Avis;
+import com.example.back.dto.AvisDto;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.AvisService;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AvisController {
     }
 
     @PostMapping("/jeu/{jeuId}")
-    public ResponseEntity<Avis> ajouterAvis(
+    public ResponseEntity<AvisDto> ajouterAvis(
             @PathVariable Long jeuId,
             @RequestBody String texte,
             Authentication auth) {
@@ -30,7 +30,7 @@ public class AvisController {
     }
 
     @PostMapping("/{avisId}/like")
-    public ResponseEntity<Avis> liker(
+    public ResponseEntity<AvisDto> liker(
             @PathVariable Long avisId,
             @RequestParam boolean like) {
         return ResponseEntity.ok(
@@ -38,7 +38,7 @@ public class AvisController {
     }
 
     @GetMapping("/jeu/{jeuId}")
-    public ResponseEntity<List<Avis>> getAvisDuJeu(
+    public ResponseEntity<List<AvisDto>> getAvisDuJeu(
             @PathVariable Long jeuId) {
         return ResponseEntity.ok(
                 avisService.getAvisDuJeu(jeuId));

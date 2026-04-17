@@ -8,7 +8,6 @@ import com.example.back.entities.Utilisateur;
 import com.example.back.repository.UtilisateurRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

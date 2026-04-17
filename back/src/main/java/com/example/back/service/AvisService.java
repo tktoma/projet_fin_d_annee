@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.dto.AvisDto;
 import com.example.back.entities.Avis;
 import com.example.back.entities.Jeu;
 import com.example.back.entities.Utilisateur;
@@ -13,6 +14,20 @@ import java.util.List;
 @Service
 public class AvisService {
 
+    private AvisDto toDto(Avis a) {
+        AvisDto dto = new AvisDto();
+        dto.setId(a.getId());
+        dto.setJeuId(a.getJeu().getId());
+        dto.setJeuTitre(a.getJeu().getTitre());
+        dto.setUtilisateurId(a.getUtilisateur().getId());
+        dto.setUtilisateurPseudo(a.getUtilisateur().getPseudo());
+        dto.setTexte(a.getTexte());
+        dto.setLikes(a.getLikes());
+        dto.setDislikes(a.getDislikes());
+        dto.setDate(a.getDate());
+        return dto;
+    }
+
     private final AvisRepository avisRepository;
     private final JeuRepository jeuRepository;
 
@@ -22,8 +37,8 @@ public class AvisService {
         this.jeuRepository = jeuRepository;
     }
 
-    public Avis ajouterAvis(Utilisateur utilisateur,
-                            Long jeuId, String texte) {
+    public AvisDto ajouterAvis(Utilisateur utilisateur,
+                               Long jeuId, String texte) {
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
                         new RuntimeException("Jeu introuvable"));
@@ -31,26 +46,30 @@ public class AvisService {
         Avis avis = avisRepository
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
-                .orElse(new Avis());
+                .orElse(Avis.builder()   // ← builder au lieu de new Avis()
+                .likes(0)        // ← valeurs explicites et claires
+                .dislikes(0)
+                .build());
 
         avis.setUtilisateur(utilisateur);
         avis.setJeu(jeu);
         avis.setTexte(texte);
         avis.setDate(LocalDate.now());
-        return avisRepository.save(avis);
+        return toDto(avisRepository.save(avis));
     }
 
-    public Avis likerAvis(Long avisId, boolean like) {
+    public AvisDto likerAvis(Long avisId, boolean like) {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->
                         new RuntimeException("Avis introuvable"));
         if (like) avis.setLikes(avis.getLikes() + 1);
         else avis.setDislikes(avis.getDislikes() + 1);
-        return avisRepository.save(avis);
+        return toDto(avisRepository.save(avis));
     }
 
-    public List<Avis> getAvisDuJeu(Long jeuId) {
-        return avisRepository.findByJeuId(jeuId);
+    public List<AvisDto> getAvisDuJeu(Long jeuId) {
+        return avisRepository.findByJeuId(jeuId)
+                .stream().map(this::toDto).toList();
     }
 
     public void supprimerAvis(Utilisateur utilisateur,

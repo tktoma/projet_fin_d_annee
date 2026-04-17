@@ -1,6 +1,6 @@
 package com.example.back.controller;
 
-import com.example.back.entities.Note;
+import com.example.back.dto.NoteDto;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.NoteService;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class NoteController {
     }
 
     @PostMapping("/jeu/{jeuId}")
-    public ResponseEntity<Note> noter(
+    public ResponseEntity<NoteDto> noter(
             @PathVariable Long jeuId,
             @RequestParam Float valeur,
             Authentication auth) {
@@ -30,14 +30,14 @@ public class NoteController {
     }
 
     @GetMapping("/jeu/{jeuId}")
-    public ResponseEntity<List<Note>> getNotesDuJeu(
+    public ResponseEntity<List<NoteDto>> getNotesDuJeu(
             @PathVariable Long jeuId) {
         return ResponseEntity.ok(
                 noteService.getNotesDuJeu(jeuId));
     }
 
     @GetMapping("/mes-notes")
-    public ResponseEntity<List<Note>> mesNotes(
+    public ResponseEntity<List<NoteDto>> mesNotes(
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
         return ResponseEntity.ok(

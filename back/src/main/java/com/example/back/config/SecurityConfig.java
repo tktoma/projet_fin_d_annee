@@ -39,7 +39,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/jeux/recherche").permitAll() // ← méthode HTTP explicite
                         .requestMatchers(HttpMethod.GET, "/api/jeux").permitAll()            // ← liste publique

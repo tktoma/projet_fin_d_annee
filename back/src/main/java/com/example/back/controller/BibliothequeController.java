@@ -1,6 +1,6 @@
 package com.example.back.controller;
 
-import com.example.back.entities.Bibliotheque;
+import com.example.back.dto.BibliothequeDto;
 import com.example.back.entities.StatutJeu;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.BibliothequeService;
@@ -22,7 +22,7 @@ public class BibliothequeController {
     }
 
     @PostMapping("/jeu/{jeuId}")
-    public ResponseEntity<Bibliotheque> ajouterJeu(
+    public ResponseEntity<BibliothequeDto> ajouterJeu(
             @PathVariable Long jeuId,
             @RequestParam StatutJeu statut,
             Authentication auth) {
@@ -32,7 +32,7 @@ public class BibliothequeController {
     }
 
     @PutMapping("/jeu/{jeuId}/statut")
-    public ResponseEntity<Bibliotheque> changerStatut(
+    public ResponseEntity<BibliothequeDto> changerStatut(
             @PathVariable Long jeuId,
             @RequestParam StatutJeu statut,
             Authentication auth) {
@@ -42,7 +42,7 @@ public class BibliothequeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Bibliotheque>> maBibliotheque(
+    public ResponseEntity<List<BibliothequeDto>> maBibliotheque(
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
         return ResponseEntity.ok(
@@ -50,7 +50,7 @@ public class BibliothequeController {
     }
 
     @GetMapping("/statut/{statut}")
-    public ResponseEntity<List<Bibliotheque>> parStatut(
+    public ResponseEntity<List<BibliothequeDto>> parStatut(
             @PathVariable StatutJeu statut,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();

@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.time.ZoneId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +43,7 @@ public class IgdbService {
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
                 .collectList()
+                .defaultIfEmpty(List.of())
                 .block();
     }
 
@@ -123,6 +123,7 @@ public class IgdbService {
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
                 .collectList()
+                .defaultIfEmpty(List.of())
                 .block();
 
         // Traitement et sauvegarde...

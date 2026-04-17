@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString
@@ -24,9 +25,11 @@ public class Avis extends BaseEntity{
     @Column(nullable = false, length = 2000)
     private String texte;
 
+    @Builder.Default            // ← garantit la valeur par défaut même avec @AllArgsConstructor
     @Column
     private Integer likes = 0;
 
+    @Builder.Default            // ← idem
     @Column
     private Integer dislikes = 0;
 
