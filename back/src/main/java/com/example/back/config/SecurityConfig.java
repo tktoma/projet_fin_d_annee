@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // Swagger UI — doit être en premier
+                        // Swagger
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
 
                         // Auth
@@ -67,13 +67,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/notes/jeu/**").permitAll()
 
-                        // Profils publics
+                        // Profils et avatars publics
                         .requestMatchers(HttpMethod.GET,
                                 "/api/users/*/profil").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/users/*/avis").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/users/*/bibliotheque").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/utilisateurs/*/avatar").permitAll()
+
+                        // Fichiers avatar servis statiquement
+                        .requestMatchers("/avatars/**").permitAll()
 
                         // Tout le reste → token requis
                         .anyRequest().authenticated()
