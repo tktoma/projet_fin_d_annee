@@ -5,26 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvatarController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/ReportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/AvatarDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ReportRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ReportResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/TraiterReportRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Avatar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/RaisonReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Report.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/StatutReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/TypeContenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvatarRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/ReportRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/ReportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/ConflictException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/ForbiddenException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/NotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/IgdbConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/IgdbConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/JwtFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvatarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvatarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/BibliothequeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/BibliothequeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/ReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ErrorResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Access.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/RaisonReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/RaisonReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/test/application-test.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/resources/application-test.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,49 +67,53 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UtilisateurServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.Unnamed (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/projet/front/src/pages&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.AuthControllerTest.executor": "Run",
+    "JUnit.UtilisateurServiceTest.executor": "Run",
+    "Maven.Unnamed.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.BackApplication.executor": "Run",
+    "Spring Boot.Unnamed (1).executor": "Run",
+    "Spring Boot.Unnamed.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "G:/projet/front/src/pages",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "node",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\projet\front\src\pages" />
       <recent name="G:\projet\front\src\component" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\projet\back\src\test\resources" />
+    </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.Unnamed">
+  <component name="RunManager" selected="Spring Boot.BackApplication">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
@@ -127,10 +144,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Unnamed" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="BackApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/back/.env" />
+      </option>
       <module name="back" />
+      <selectedOptions>
+        <option name="environmentVariables" />
+      </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.back.BackApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -150,7 +173,7 @@
       <item itemvalue="JUnit.AuthControllerTest" />
       <item itemvalue="JUnit.UtilisateurServiceTest" />
       <item itemvalue="npm.dev" />
-      <item itemvalue="Spring Boot.Unnamed" />
+      <item itemvalue="Spring Boot.BackApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -199,7 +222,7 @@
       <workItem from="1776765837906" duration="588000" />
       <workItem from="1776767291749" duration="4554000" />
       <workItem from="1776780230305" duration="973000" />
-      <workItem from="1776850167023" duration="1918000" />
+      <workItem from="1776850167023" duration="11913000" />
     </task>
     <servers />
   </component>

@@ -27,7 +27,6 @@ public class JeuController {
 
     /**
      * Liste paginée avec filtres combinés, tous optionnels.
-     *
      * GET /api/jeux                              → tous les jeux
      * GET /api/jeux?genre=RPG                    → filtrer par genre
      * GET /api/jeux?plateforme=PC                → filtrer par plateforme

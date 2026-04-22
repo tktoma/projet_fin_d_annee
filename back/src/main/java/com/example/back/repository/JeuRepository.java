@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JeuRepository
@@ -15,6 +16,8 @@ public interface JeuRepository
         JpaSpecificationExecutor<Jeu> {
 
     boolean existsByExternalId(String externalId);
+
+    Optional<Jeu> findByExternalId(String externalId);
 
     List<Jeu> findByTitreContainingIgnoreCase(String titre);
 

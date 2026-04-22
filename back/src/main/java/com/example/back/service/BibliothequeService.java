@@ -1,29 +1,21 @@
 package com.example.back.service;
 
 import com.example.back.dto.BibliothequeDto;
+import com.example.back.dto.ResponseMapper;
 import com.example.back.entities.Bibliotheque;
 import com.example.back.entities.Jeu;
 import com.example.back.entities.StatutJeu;
 import com.example.back.entities.Utilisateur;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.BibliothequeRepository;
 import com.example.back.repository.JeuRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class BibliothequeService {
-
-    private BibliothequeDto toDto(Bibliotheque b) {
-        BibliothequeDto dto = new BibliothequeDto();
-        dto.setId(b.getId());
-        dto.setJeuId(b.getJeu().getId());
-        dto.setJeuTitre(b.getJeu().getTitre());
-        dto.setJeuCoverUrl(b.getJeu().getCoverUrl());
-        dto.setStatut(b.getStatut());
-        dto.setDate(b.getDate());
-        return dto;
-    }
 
     private final BibliothequeRepository bibliothequeRepository;
     private final JeuRepository jeuRepository;
@@ -37,27 +29,30 @@ public class BibliothequeService {
     }
 
     // Ajouter un jeu à sa bibliothèque
+    @Transactional
     public BibliothequeDto ajouterJeu(Utilisateur utilisateur,
                                       Long jeuId,
                                       StatutJeu statut) {
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Jeu introuvable"));
+                        new NotFoundException("Jeu introuvable"));
 
         Bibliotheque entree = bibliothequeRepository
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
-                .orElse(new Bibliotheque());
+                .orElseGet(Bibliotheque::new);
 
         entree.setUtilisateur(utilisateur);
         entree.setJeu(jeu);
         entree.setStatut(statut);
         entree.setDate(LocalDate.now());
         Bibliotheque saved = bibliothequeRepository.save(entree);
-        return toDto(saved);
+        return ResponseMapper.toBibliothequeDto(
+                bibliothequeRepository.save(entree));
     }
 
     // Changer le statut d'un jeu
+    @Transactional
     public BibliothequeDto changerStatut(Utilisateur utilisateur,
                                          Long jeuId,
                                          StatutJeu nouveauStatut) {
@@ -65,10 +60,10 @@ public class BibliothequeService {
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Jeu non trouvé " +
-                                "dans la bibliothèque"));
+                        new NotFoundException("Jeu non trouvé dans la bibliothèque"));
         entree.setStatut(nouveauStatut);
-        return toDto(bibliothequeRepository.save(entree));
+        return ResponseMapper.toBibliothequeDto(
+                bibliothequeRepository.save(entree));
     }
 
 
@@ -77,7 +72,7 @@ public class BibliothequeService {
         return bibliothequeRepository
                 .findByUtilisateurId(utilisateurId)
                 .stream()
-                .map(this::toDto)
+                .map(ResponseMapper::toBibliothequeDto)
                 .toList();
     }
 
@@ -87,7 +82,7 @@ public class BibliothequeService {
         return bibliothequeRepository
                 .findByUtilisateurIdAndStatut(utilisateurId, statut)
                 .stream()
-                .map(this::toDto)
+                .map(ResponseMapper::toBibliothequeDto)
                 .toList();
     }
 
@@ -97,7 +92,7 @@ public class BibliothequeService {
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Entrée introuvable"));
+                        new NotFoundException("Entrée introuvable"));
         bibliothequeRepository.delete(entree);
     }
 }

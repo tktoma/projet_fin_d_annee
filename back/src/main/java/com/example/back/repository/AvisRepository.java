@@ -1,6 +1,8 @@
 package com.example.back.repository;
 
 import com.example.back.entities.Avis;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,5 @@ public interface AvisRepository
     List<Avis> findByUtilisateurId(Long utilisateurId);
     Optional<Avis> findByUtilisateurIdAndJeuId(
             Long utilisateurId, Long jeuId);
+    Page<Avis> findByUtilisateurIdOrderByDateDesc(Long utilisateurId, Pageable pageable);
 }

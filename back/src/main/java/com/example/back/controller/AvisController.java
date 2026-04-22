@@ -25,6 +25,9 @@ public class AvisController {
             @RequestBody String texte,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 avisService.ajouterAvis(u, jeuId, texte));
     }
@@ -49,6 +52,9 @@ public class AvisController {
             @PathVariable Long avisId,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         avisService.supprimerAvis(u, avisId);
         return ResponseEntity.noContent().build();
     }

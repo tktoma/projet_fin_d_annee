@@ -13,9 +13,6 @@ public class IgdbConfig {
     @Value("${igdb.client-id}")
     private String clientId;
 
-    @Value("${igdb.client-secret}")
-    private String clientSecret;
-
     @Bean
     public WebClient igdbWebClient(TwitchTokenService twitchTokenService) {
         return WebClient.builder()

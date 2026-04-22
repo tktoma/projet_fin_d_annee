@@ -27,6 +27,9 @@ public class BibliothequeController {
             @RequestParam StatutJeu statut,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 bibliothequeService.ajouterJeu(u, jeuId, statut));
     }
@@ -37,6 +40,9 @@ public class BibliothequeController {
             @RequestParam StatutJeu statut,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 bibliothequeService.changerStatut(u, jeuId, statut));
     }
@@ -45,6 +51,9 @@ public class BibliothequeController {
     public ResponseEntity<List<BibliothequeDto>> maBibliotheque(
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 bibliothequeService.getBibliotheque(u.getId()));
     }
@@ -54,16 +63,23 @@ public class BibliothequeController {
             @PathVariable StatutJeu statut,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 bibliothequeService.getBibliothequeParStatut(
-                        u.getId(), statut));
+                        u.getId(), statut)); // ← utiliser le paramètre statut ici
     }
+
 
     @DeleteMapping("/jeu/{jeuId}")
     public ResponseEntity<Void> supprimer(
             @PathVariable Long jeuId,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         bibliothequeService.supprimerJeu(u, jeuId);
         return ResponseEntity.noContent().build();
     }

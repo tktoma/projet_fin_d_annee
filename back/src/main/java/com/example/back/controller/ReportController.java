@@ -31,6 +31,9 @@ public class ReportController {
             @Valid @RequestBody ReportRequest request,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 reportService.soumettre(u, request));
     }

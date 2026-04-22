@@ -30,7 +30,7 @@ public class Jeu extends BaseEntity{
     @Column(nullable = false, precision = 2)
     private float noteMoyenne;
     @Column
-    private String source_IGBD;         // ex: "igdb"
+    private String source_IGBD;        // ex: "IGBD"
     @Column
-    private String externalId;     // id dans la BDD IGDB
+    private String externalId;     // id dans la BDD IGBD
 }

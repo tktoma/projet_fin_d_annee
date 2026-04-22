@@ -23,8 +23,7 @@ public class AdminController {
 
     @GetMapping("/utilisateurs")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    public ResponseEntity<List<UtilisateurResponse>> listerUsers(
-            Authentication auth) {
+    public ResponseEntity<List<UtilisateurResponse>> listerUsers() {
         return ResponseEntity.ok(
                 adminService.listerUtilisateurs());
     }

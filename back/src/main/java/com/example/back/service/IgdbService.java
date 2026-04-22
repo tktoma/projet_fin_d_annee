@@ -158,30 +158,27 @@ public class IgdbService {
     // -------------------------------------------------------------------------
 
     private Jeu importerEntite(Long igdbId) {
-        if (jeuRepository.existsByExternalId(String.valueOf(igdbId))) {
-            return jeuRepository.findAll().stream()
-                    .filter(j -> String.valueOf(igdbId)
-                            .equals(j.getExternalId()))
-                    .findFirst()
-                    .orElseThrow();
-        }
+        String externalId = String.valueOf(igdbId);
 
-        String body = "fields name,summary,cover.url,"
-                + "genres.name,platforms.name,"
-                + "first_release_date;"
-                + " where id = " + igdbId + ";";
+        return jeuRepository.findByExternalId(externalId)
+                .orElseGet(() -> {
+                    String body = "fields name,summary,cover.url,"
+                            + "genres.name,platforms.name,"
+                            + "first_release_date;"
+                            + " where id = " + igdbId + ";";
 
-        IgdbGameDto dto = igdbWebClient.post()
-                .uri("/games")
-                .bodyValue(body)
-                .retrieve()
-                .bodyToFlux(IgdbGameDto.class)
-                .next()
-                .blockOptional()
-                .orElseThrow(() -> new RuntimeException(
-                        "Jeu IGDB introuvable : " + igdbId));
+                    IgdbGameDto dto = igdbWebClient.post()
+                            .uri("/games")
+                            .bodyValue(body)
+                            .retrieve()
+                            .bodyToFlux(IgdbGameDto.class)
+                            .next()
+                            .blockOptional()
+                            .orElseThrow(() -> new RuntimeException(
+                                    "Jeu IGDB introuvable : " + igdbId));
 
-        return jeuRepository.save(convertirDtoEnJeu(dto));
+                    return jeuRepository.save(convertirDtoEnJeu(dto));
+                });
     }
 
     private Jeu convertirDtoEnJeu(IgdbGameDto dto) {

@@ -3,7 +3,7 @@ package com.example.back.entities;
 public enum RaisonReport {
     CONTENU_INAPPROPRIE,
     SPAM,
-    HARCÈLEMENT,
+    HARCELEMENT,
     FAUSSE_INFORMATION,
     AUTRE
 }

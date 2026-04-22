@@ -176,7 +176,7 @@ class AuthControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper
                                     .writeValueAsString(registerRequest())))
-                    .andExpect(status().isInternalServerError())
+                    .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.message").value("Email déjà utilisé"));
         }
     }
@@ -239,7 +239,7 @@ class AuthControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper
                                     .writeValueAsString(loginRequest())))
-                    .andExpect(status().isInternalServerError())
+                    .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.message")
                             .value("Mot de passe incorrect"));
         }
@@ -278,7 +278,7 @@ class AuthControllerTest {
             mockMvc.perform(post("/api/auth/refresh")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{\"refreshToken\":\"token-expire\"}"))
-                    .andExpect(status().isInternalServerError())
+                    .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.message")
                             .value("Refresh token expiré"));
         }

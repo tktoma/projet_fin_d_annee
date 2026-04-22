@@ -26,6 +26,9 @@ public class AvatarController {
             @RequestParam("fichier") MultipartFile fichier,
             Authentication auth) throws IOException {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 avatarService.uploadAvatar(u, fichier));
     }
@@ -44,6 +47,9 @@ public class AvatarController {
     public ResponseEntity<Void> supprimerAvatar(
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         avatarService.supprimerAvatar(u);
         return ResponseEntity.noContent().build();
     }

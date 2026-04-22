@@ -1,9 +1,12 @@
 package com.example.back.service;
 
 import com.example.back.dto.AvisDto;
+import com.example.back.dto.ResponseMapper;
 import com.example.back.entities.Avis;
 import com.example.back.entities.Jeu;
 import com.example.back.entities.Utilisateur;
+import com.example.back.exception.ForbiddenException;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.AvisRepository;
 import com.example.back.repository.JeuRepository;
 import org.springframework.stereotype.Service;
@@ -13,20 +16,6 @@ import java.util.List;
 
 @Service
 public class AvisService {
-
-    private AvisDto toDto(Avis a) {
-        AvisDto dto = new AvisDto();
-        dto.setId(a.getId());
-        dto.setJeuId(a.getJeu().getId());
-        dto.setJeuTitre(a.getJeu().getTitre());
-        dto.setUtilisateurId(a.getUtilisateur().getId());
-        dto.setUtilisateurPseudo(a.getUtilisateur().getPseudo());
-        dto.setTexte(a.getTexte());
-        dto.setLikes(a.getLikes());
-        dto.setDislikes(a.getDislikes());
-        dto.setDate(a.getDate());
-        return dto;
-    }
 
     private final AvisRepository avisRepository;
     private final JeuRepository jeuRepository;
@@ -41,7 +30,7 @@ public class AvisService {
                                Long jeuId, String texte) {
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Jeu introuvable"));
+                        new NotFoundException("Jeu introuvable"));
 
         Avis avis = avisRepository
                 .findByUtilisateurIdAndJeuId(
@@ -55,21 +44,23 @@ public class AvisService {
         avis.setJeu(jeu);
         avis.setTexte(texte);
         avis.setDate(LocalDate.now());
-        return toDto(avisRepository.save(avis));
+        return ResponseMapper.toAvisDto(avisRepository.save(avis));
     }
 
     public AvisDto likerAvis(Long avisId, boolean like) {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->
-                        new RuntimeException("Avis introuvable"));
+                        new NotFoundException("Avis introuvable"));
         if (like) avis.setLikes(avis.getLikes() + 1);
         else avis.setDislikes(avis.getDislikes() + 1);
-        return toDto(avisRepository.save(avis));
+        return ResponseMapper.toAvisDto(avisRepository.save(avis));
     }
 
     public List<AvisDto> getAvisDuJeu(Long jeuId) {
         return avisRepository.findByJeuId(jeuId)
-                .stream().map(this::toDto).toList();
+                .stream()
+                .map(ResponseMapper::toAvisDto)
+                .toList();
     }
 
     public void supprimerAvis(Utilisateur utilisateur,
@@ -78,7 +69,7 @@ public class AvisService {
                 .orElseThrow(() ->
                         new RuntimeException("Avis introuvable"));
         if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
-            throw new RuntimeException("Non autorisé");
+            throw new ForbiddenException("Non autorisé");
         }
         avisRepository.delete(avis);
     }

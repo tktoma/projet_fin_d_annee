@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.time.LocalDateTime;
 
@@ -50,11 +52,13 @@ public class TwitchTokenService {
 
     private void refreshToken() {
         try {
+            MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+            form.add("client_id", clientId);
+            form.add("client_secret", clientSecret);
+            form.add("grant_type", "client_credentials");
             TwitchTokenResponse response = webClient.post()
                     .uri("/oauth2/token")
-                    .bodyValue("client_id=" + clientId + 
-                             "&client_secret=" + clientSecret + 
-                             "&grant_type=client_credentials")
+                    .bodyValue(form)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .retrieve()
                     .bodyToMono(TwitchTokenResponse.class)

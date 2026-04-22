@@ -1,29 +1,20 @@
 package com.example.back.service;
 
 import com.example.back.dto.NoteDto;
+import com.example.back.dto.ResponseMapper;
 import com.example.back.entities.Jeu;
 import com.example.back.entities.Note;
 import com.example.back.entities.Utilisateur;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.JeuRepository;
 import com.example.back.repository.NoteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class NoteService {
-
-    private NoteDto toDto(Note n) {
-        NoteDto dto = new NoteDto();
-        dto.setId(n.getId());
-        dto.setJeuId(n.getJeu().getId());
-        dto.setJeuTitre(n.getJeu().getTitre());
-        dto.setUtilisateurId(n.getUtilisateur().getId());
-        dto.setUtilisateurPseudo(n.getUtilisateur().getPseudo());
-        dto.setValeur(n.getValeur());
-        dto.setDate(n.getDate());
-        return dto;
-    }
 
     private final NoteRepository noteRepository;
     private final JeuRepository jeuRepository;
@@ -36,6 +27,7 @@ public class NoteService {
 
 
     // Ajouter ou modifier une note
+    @Transactional
     public NoteDto noterJeu(Utilisateur utilisateur,
                             Long jeuId, Float valeur) {
         if (valeur < 0 || valeur > 10) {
@@ -45,13 +37,14 @@ public class NoteService {
 
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Jeu introuvable"));
+                        new NotFoundException("Jeu introuvable"));
+
 
         // Modifie si déjà noté, sinon crée
         Note note = noteRepository
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
-                .orElse(new Note());
+                .orElseGet(Note::new);
 
         note.setUtilisateur(utilisateur);
         note.setJeu(jeu);
@@ -66,17 +59,21 @@ public class NoteService {
         jeu.setNoteMoyenne(moyenne);
         jeuRepository.save(jeu);
 
-        return toDto(note);
+        return ResponseMapper.toNoteDto(note);
     }
 
     public List<NoteDto> getNotesDuJeu(Long jeuId) {
         return noteRepository.findByJeuId(jeuId)
-                .stream().map(this::toDto).toList();
+                .stream()
+                .map(ResponseMapper::toNoteDto)
+                .toList();
     }
 
     public List<NoteDto> getNotesUtilisateur(Long utilisateurId) {
         return noteRepository.findByUtilisateurId(utilisateurId)
-                .stream().map(this::toDto).toList();
+                .stream()
+                .map(ResponseMapper::toNoteDto)
+                .toList();
     }
 
     public void supprimerNote(Utilisateur utilisateur,
@@ -85,7 +82,7 @@ public class NoteService {
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
                 .orElseThrow(() ->
-                        new RuntimeException("Note introuvable"));
+                        new NotFoundException("Note introuvable"));
         noteRepository.delete(note);
     }
 }

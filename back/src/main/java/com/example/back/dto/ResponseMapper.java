@@ -1,9 +1,6 @@
 package com.example.back.dto;
 
-import com.example.back.entities.Avatar;
-import com.example.back.entities.Jeu;
-import com.example.back.entities.Report;
-import com.example.back.entities.Utilisateur;
+import com.example.back.entities.*;
 
 public class ResponseMapper {
 
@@ -60,6 +57,42 @@ public class ResponseMapper {
             dto.setModerateurPseudo(r.getModerateur().getPseudo());
         }
         dto.setNoteModerateur(r.getNoteModerateur());
+        return dto;
+    }
+    public static AvisDto toAvisDto(Avis a) {
+        AvisDto dto = new AvisDto();
+        dto.setId(a.getId());
+        dto.setJeuId(a.getJeu().getId());
+        dto.setJeuTitre(a.getJeu().getTitre());
+        dto.setUtilisateurId(a.getUtilisateur().getId());
+        dto.setUtilisateurPseudo(a.getUtilisateur().getPseudo());
+        dto.setTexte(a.getTexte());
+        dto.setLikes(a.getLikes());
+        dto.setDislikes(a.getDislikes());
+        dto.setDate(a.getDate());
+        return dto;
+    }
+
+    public static NoteDto toNoteDto(Note n) {
+        NoteDto dto = new NoteDto();
+        dto.setId(n.getId());
+        dto.setJeuId(n.getJeu().getId());
+        dto.setJeuTitre(n.getJeu().getTitre());
+        dto.setUtilisateurId(n.getUtilisateur().getId());
+        dto.setUtilisateurPseudo(n.getUtilisateur().getPseudo());
+        dto.setValeur(n.getValeur());
+        dto.setDate(n.getDate());
+        return dto;
+    }
+
+    public static BibliothequeDto toBibliothequeDto(Bibliotheque b) {
+        BibliothequeDto dto = new BibliothequeDto();
+        dto.setId(b.getId());
+        dto.setJeuId(b.getJeu().getId());
+        dto.setJeuTitre(b.getJeu().getTitre());
+        dto.setJeuCoverUrl(b.getJeu().getCoverUrl());
+        dto.setStatut(b.getStatut());
+        dto.setDate(b.getDate());
         return dto;
     }
 }

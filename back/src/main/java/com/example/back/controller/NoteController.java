@@ -47,6 +47,9 @@ public class NoteController {
     public ResponseEntity<List<NoteDto>> mesNotes(
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         return ResponseEntity.ok(
                 noteService.getNotesUtilisateur(u.getId()));
     }
@@ -56,6 +59,9 @@ public class NoteController {
             @PathVariable Long jeuId,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
+        if (u == null) {
+            throw new IllegalStateException("Utilisateur non authentifié");
+        }
         noteService.supprimerNote(u, jeuId);
         return ResponseEntity.noContent().build();
     }
