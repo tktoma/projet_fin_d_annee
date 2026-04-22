@@ -1,5 +1,7 @@
 package com.example.back.service;
 
+import com.example.back.dto.ResponseMapper;
+import com.example.back.dto.UtilisateurResponse;
 import com.example.back.entities.Avis;
 import com.example.back.entities.Role;
 import com.example.back.entities.Utilisateur;
@@ -22,11 +24,9 @@ public class AdminService {
         this.avisRepository = avisRepository;
     }
 
-    // Changer le rôle d'un utilisateur
-    public Utilisateur changerRole(Long utilisateurId,
-                                   Role nouveauRole,
-                                   Utilisateur demandeur) {
-        // Seul un SUPERADMIN peut attribuer SUPERADMIN
+    public UtilisateurResponse changerRole(Long utilisateurId,
+                                           Role nouveauRole,
+                                           Utilisateur demandeur) {
         if (nouveauRole == Role.SUPERADMIN
                 && demandeur.getRole() != Role.SUPERADMIN) {
             throw new RuntimeException(
@@ -38,7 +38,6 @@ public class AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Utilisateur introuvable"));
 
-        // Un admin ne peut pas modifier un autre admin/superadmin
         if (demandeur.getRole() == Role.ADMIN
                 && (cible.getRole() == Role.ADMIN
                 || cible.getRole() == Role.SUPERADMIN)) {
@@ -46,15 +45,17 @@ public class AdminService {
         }
 
         cible.setRole(nouveauRole);
-        return utilisateurRepository.save(cible);
+        return ResponseMapper.toUtilisateurResponse(
+                utilisateurRepository.save(cible));
     }
 
-    // Liste tous les utilisateurs
-    public List<Utilisateur> listerUtilisateurs() {
-        return utilisateurRepository.findAll();
+    public List<UtilisateurResponse> listerUtilisateurs() {
+        return utilisateurRepository.findAll()
+                .stream()
+                .map(ResponseMapper::toUtilisateurResponse)
+                .toList();
     }
 
-    // Supprimer un utilisateur
     public void supprimerUtilisateur(Long utilisateurId,
                                      Utilisateur demandeur) {
         Utilisateur cible = utilisateurRepository
@@ -69,7 +70,6 @@ public class AdminService {
         utilisateurRepository.delete(cible);
     }
 
-    // Supprimer un avis (modération)
     public void supprimerAvis(Long avisId) {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->

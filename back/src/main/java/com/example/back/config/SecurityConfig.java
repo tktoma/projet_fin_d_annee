@@ -17,6 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String[] SWAGGER_WHITELIST = {
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml"
+    };
+
     private final JwtFilter jwtFilter;
 
     public SecurityConfig(JwtFilter jwtFilter) {
@@ -28,7 +36,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean// active @PreAuthorize dans les controllers
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
         http
@@ -37,15 +45,35 @@ public class SecurityConfig {
                         .sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Public
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/jeux/recherche").permitAll() // ← méthode HTTP explicite
-                        .requestMatchers(HttpMethod.GET, "/api/jeux").permitAll()            // ← liste publique
-                        .requestMatchers(HttpMethod.GET, "/api/jeux/**").permitAll()         // ← détail public
+                        // Swagger UI — doit être en premier
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/avis/jeu/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/notes/jeu/**").permitAll()
+                        // Auth
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/auth/**").permitAll()
+
+                        // Jeux
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/jeux/recherche").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/jeux").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/jeux/**").permitAll()
+
+                        // Avis et notes publics
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/avis/jeu/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/notes/jeu/**").permitAll()
+
+                        // Profils publics
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/users/*/profil").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/users/*/avis").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/users/*/bibliotheque").permitAll()
 
                         // Tout le reste → token requis
                         .anyRequest().authenticated()

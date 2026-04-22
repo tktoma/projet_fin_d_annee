@@ -1,0 +1,50 @@
+services:
+
+  mariadb:
+    image: mariadb:11.4
+    container_name: back_mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MARIADB_DATABASE: ${DB_NAME:-back_db}
+      MARIADB_USER: ${DB_USER:-back_user}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-back_password}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: back_app
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/${DB_NAME:-back_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-back_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-back_password}
+      JWT_SECRET: ${JWT_SECRET:-czenUmsMHsFUwBQ1rSg6MumlsSzzZhPsfO3KCNl4rzY}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-2592000000}
+      IGDB_CLIENT_ID: ${IGDB_CLIENT_ID}
+      IGDB_CLIENT_SECRET: ${IGDB_CLIENT_SECRET}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+    ports:
+      - "8080:8080"
+    volumes:
+      - back_logs:/app/logs
+
+volumes:
+  mariadb_data:
+  back_logs:

@@ -3,12 +3,16 @@ package com.example.back.controller;
 import com.example.back.dto.NoteDto;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.NoteService;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
@@ -22,7 +26,10 @@ public class NoteController {
     @PostMapping("/jeu/{jeuId}")
     public ResponseEntity<NoteDto> noter(
             @PathVariable Long jeuId,
-            @RequestParam Float valeur,
+            @RequestParam
+            @DecimalMin(value = "0.0", message = "La note doit être au minimum 0")
+            @DecimalMax(value = "10.0", message = "La note doit être au maximum 10")
+            Float valeur,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
         return ResponseEntity.ok(

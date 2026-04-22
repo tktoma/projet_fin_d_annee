@@ -1,5 +1,6 @@
 package com.example.back.controller;
 
+import com.example.back.dto.UtilisateurResponse;
 import com.example.back.entities.Role;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.AdminService;
@@ -20,19 +21,17 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    // Lister tous les users — ADMIN + SUPERADMIN
     @GetMapping("/utilisateurs")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    public ResponseEntity<List<Utilisateur>> listerUsers(
+    public ResponseEntity<List<UtilisateurResponse>> listerUsers(
             Authentication auth) {
         return ResponseEntity.ok(
                 adminService.listerUtilisateurs());
     }
 
-    // Changer le rôle — ADMIN (limité) + SUPERADMIN
     @PutMapping("/utilisateurs/{id}/role")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    public ResponseEntity<Utilisateur> changerRole(
+    public ResponseEntity<UtilisateurResponse> changerRole(
             @PathVariable Long id,
             @RequestParam Role role,
             Authentication auth) {
@@ -41,7 +40,6 @@ public class AdminController {
                 adminService.changerRole(id, role, demandeur));
     }
 
-    // Supprimer un user — ADMIN + SUPERADMIN
     @DeleteMapping("/utilisateurs/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     public ResponseEntity<Void> supprimerUser(
@@ -52,7 +50,6 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    // Modérer un avis — ADMIN + SUPERADMIN
     @DeleteMapping("/avis/{avisId}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     public ResponseEntity<Void> supprimerAvis(

@@ -5,6 +5,7 @@ import com.example.back.dto.LoginRequest;
 import com.example.back.dto.RefreshRequest;
 import com.example.back.dto.RegisterRequest;
 import com.example.back.service.UtilisateurService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,21 +24,23 @@ public class AuthController {
 
     @PostMapping("/inscription")
     public ResponseEntity<AuthResponse> inscrire(
-            @RequestBody RegisterRequest request) {
+            @Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(
                 utilisateurService.inscrire(request));
     }
 
     @PostMapping("/connexion")
     public ResponseEntity<AuthResponse> connecter(
-            @RequestBody LoginRequest request) {
+            @Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(
                 utilisateurService.connecter(request));
     }
+
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             @RequestBody RefreshRequest refreshRequest) {
         return ResponseEntity.ok(
-                utilisateurService.refreshToken(refreshRequest.getRefreshToken()));
+                utilisateurService.refreshToken(
+                        refreshRequest.getRefreshToken()));
     }
 }
