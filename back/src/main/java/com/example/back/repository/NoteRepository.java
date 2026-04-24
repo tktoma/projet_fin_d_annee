@@ -19,9 +19,6 @@ public interface NoteRepository
     List<Note> findByUtilisateurId(Long utilisateurId);
     Optional<Note> findByUtilisateurIdAndJeuId(
             Long utilisateurId, Long jeuId);
-    boolean existsByUtilisateurIdAndJeuId(
-            Long utilisateurId, Long jeuId);
-
     // Calcul de la moyenne des notes d'un jeu
     @Query("SELECT AVG(n.valeur) FROM Note n WHERE n.jeu.id = :jeuId")
     Optional<Float> calculerMoyenne(@Param("jeuId") Long jeuId);

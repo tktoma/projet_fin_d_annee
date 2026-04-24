@@ -85,4 +85,10 @@ public class JeuController {
                 "Import page " + page + " : " + result.getImportes()
                         + " jeux, total : " + result.getTotal());
     }
+    @DeleteMapping("/cache")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
+    public ResponseEntity<Void> viderCache() {
+        igdbService.viderCacheRecherches();
+        return ResponseEntity.noContent().build();
+    }
 }

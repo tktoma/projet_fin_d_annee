@@ -9,7 +9,6 @@ import com.example.back.repository.JeuRepository;
 import com.example.back.repository.JeuSpecification;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -24,15 +23,11 @@ import java.util.List;
 @Service
 public class IgdbService {
 
-    @Value("${igdb.client-id}")
-    private String igdbClientId;
-
     private final WebClient igdbWebClient;
     private final JeuRepository jeuRepository;
 
     public IgdbService(WebClient igdbWebClient,
-                       JeuRepository jeuRepository,
-                       TwitchTokenService twitchTokenService) {
+                       JeuRepository jeuRepository) {
         this.igdbWebClient = igdbWebClient;
         this.jeuRepository = jeuRepository;
     }
@@ -41,7 +36,6 @@ public class IgdbService {
      * Le résultat est mis en cache 10 minutes par titre — évite
      * les appels répétés pour la même saisie et respecte la limite
      * de 4 req/sec de l'API IGDB.
-     *
      * La clé est normalisée en minuscules pour que "Zelda" et "zelda"
      * partagent la même entrée de cache.
      */
@@ -60,7 +54,7 @@ public class IgdbService {
                 + " limit 10;";
 
         return igdbWebClient.post()
-                .uri("/search")
+                .uri("/games")
                 .bodyValue(body)
                 .retrieve()
                 .bodyToFlux(IgdbGameDto.class)
@@ -80,12 +74,8 @@ public class IgdbService {
     }
     // Import d'un jeu unique — inchangé
     public JeuResponse importerJeu(Long igdbId) {
-        return ResponseMapper.toJeuResponse(importerEntite(igdbId));
-    }
 
-    // Liste paginée sans filtre — inchangée, utilisée en interne
-    public Page<JeuResponse> listerJeux(Pageable pageable) {
-        return rechercherAvecFiltres(null, null, null, null, pageable);
+        return ResponseMapper.toJeuResponse(importerEntite(igdbId));
     }
 
     /**
@@ -133,6 +123,8 @@ public class IgdbService {
                 .collectList()
                 .defaultIfEmpty(List.of())
                 .block();
+
+        if (jeuxIgdb == null) return new ImportResult(0, 0);
 
         List<Jeu> jeuxImportes = new ArrayList<>();
         for (IgdbGameDto dto : jeuxIgdb) {
@@ -192,10 +184,10 @@ public class IgdbService {
                     .replace("t_thumb", "t_cover_big"));
         }
         if (dto.getGenres() != null && !dto.getGenres().isEmpty()) {
-            jeu.setGenre(dto.getGenres().get(0).getName());
+            jeu.setGenre(dto.getGenres().getFirst().getName());
         }
         if (dto.getPlatforms() != null && !dto.getPlatforms().isEmpty()) {
-            jeu.setPlateforme(dto.getPlatforms().get(0).getName());
+            jeu.setPlateforme(dto.getPlatforms().getFirst().getName());
         }
         if (dto.getFirstReleaseDate() != null) {
             jeu.setDateSortie(

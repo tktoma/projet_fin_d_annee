@@ -46,7 +46,6 @@ public class BibliothequeService {
         entree.setJeu(jeu);
         entree.setStatut(statut);
         entree.setDate(LocalDate.now());
-        Bibliotheque saved = bibliothequeRepository.save(entree);
         return ResponseMapper.toBibliothequeDto(
                 bibliothequeRepository.save(entree));
     }

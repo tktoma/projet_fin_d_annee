@@ -82,10 +82,11 @@ public class TwitchTokenService {
         @JsonProperty("expires_in")
         private int expires_in;
 
-        private String token_type;
-
-        public String getAccessToken() { return access_token; }
-        public int getExpiresIn() { return expires_in; }
-        public String getTokenType() { return token_type; }
+        public String getAccessToken() {
+            return access_token;
+        }
+        public int getExpiresIn() {
+            return expires_in;
+        }
     }
 }

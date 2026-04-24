@@ -67,6 +67,11 @@ public class AdminService {
             throw new RuntimeException(
                     "Impossible de supprimer un SUPERADMIN");
         }
+        // Un ADMIN ne peut pas supprimer un autre ADMIN
+        if (demandeur.getRole() == Role.ADMIN
+                && cible.getRole() == Role.ADMIN) {
+            throw new RuntimeException("Non autorisé");
+        }
         utilisateurRepository.delete(cible);
     }
 
