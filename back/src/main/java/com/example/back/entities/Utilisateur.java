@@ -1,14 +1,12 @@
 package com.example.back.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -16,8 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-
-public class Utilisateur extends BaseEntity{
+public class Utilisateur extends BaseEntity {
 
     @Column(nullable = false, length = 20, unique = true)
     private String pseudo;
@@ -33,13 +30,41 @@ public class Utilisateur extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER; // USER par défaut
+    private Role role = Role.USER;
 
-    // Dans la classe Utilisateur, après le champ role :
     @Column(unique = true)
     private String refreshToken;
 
     @Column
     private LocalDateTime refreshTokenExpiration;
 
+    // Cascade DELETE — supprime automatiquement les entités liées
+    // quand l'utilisateur est supprimé
+    @OneToMany(mappedBy = "utilisateur",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Avis> avis = new ArrayList<>();
+
+    @OneToMany(mappedBy = "utilisateur",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Note> notes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "utilisateur",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Bibliotheque> bibliotheque = new ArrayList<>();
+
+    @OneToOne(mappedBy = "utilisateur",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Avatar avatar;
 }

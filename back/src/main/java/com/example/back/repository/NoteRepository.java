@@ -20,8 +20,12 @@ public interface NoteRepository
     Optional<Note> findByUtilisateurIdAndJeuId(
             Long utilisateurId, Long jeuId);
     long countByUtilisateurId(Long utilisateurId);
-    // Calcul de la moyenne des notes d'un jeu
+
     @Query("SELECT AVG(n.valeur) FROM Note n WHERE n.jeu.id = :jeuId")
     Optional<Float> calculerMoyenne(@Param("jeuId") Long jeuId);
+
     Page<Note> findByUtilisateurIdOrderByDateDesc(Long utilisateurId, Pageable pageable);
+
+    // Pagination pour getNotesDuJeu — évite les réponses trop lourdes
+    Page<Note> findByJeuIdOrderByDateDesc(Long jeuId, Pageable pageable);
 }

@@ -11,15 +11,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+
 import java.time.LocalDateTime;
 
 @Service
 public class TwitchTokenService {
 
-    private String cachedToken;
-    private LocalDateTime tokenExpiration;
+    private static final Logger log =
+            LoggerFactory.getLogger(TwitchTokenService.class);
+
+    private volatile String cachedToken;
+    private volatile LocalDateTime tokenExpiration;
+
     private final WebClient webClient;
-    private static final Logger log = LoggerFactory.getLogger(TwitchTokenService.class);
 
     @Value("${igdb.client-id}")
     private String clientId;
@@ -27,57 +31,83 @@ public class TwitchTokenService {
     @Value("${igdb.client-secret}")
     private String clientSecret;
 
-    public TwitchTokenService(@Qualifier("webClient") WebClient webClient) {
+    public TwitchTokenService(
+            @Qualifier("webClient") WebClient webClient) {
         this.webClient = webClient;
     }
 
     @PostConstruct
     public void init() {
-        // Récupération du token au démarrage
-        refreshToken();
-    }
-
-    @Scheduled(fixedRate = 300000) // Toutes les 5 minutes
-    public void checkAndRefreshToken() {
-        if (shouldRefreshToken()) {
+        try {
             refreshToken();
+        } catch (Exception e) {
+            // Ne pas bloquer le démarrage si les credentials IGDB
+            // sont absents (env de test, par exemple)
+            log.warn("Impossible d'obtenir le token Twitch au démarrage "
+                            + "— les appels IGDB échoueront jusqu'au prochain refresh : {}",
+                    e.getMessage());
         }
     }
 
+    @Scheduled(fixedRate = 300_000) // Toutes les 5 minutes
+    public void checkAndRefreshToken() {
+        if (shouldRefreshToken()) {
+            try {
+                refreshToken();
+            } catch (Exception e) {
+                log.error("Échec du refresh token Twitch planifié : {}",
+                        e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Retourne le token courant.
+     * Lève une exception claire si le token n'a jamais pu être obtenu,
+     * plutôt que de propager un NullPointerException cryptique.
+     */
     public String getCurrentToken() {
+        if (cachedToken == null) {
+            throw new IllegalStateException(
+                    "Token Twitch non disponible — vérifiez IGDB_CLIENT_ID "
+                            + "et IGDB_CLIENT_SECRET");
+        }
         return cachedToken;
     }
 
     private boolean shouldRefreshToken() {
-        return tokenExpiration == null ||
-                tokenExpiration.minusMinutes(5).isBefore(LocalDateTime.now());
+        return tokenExpiration == null
+                || tokenExpiration.minusMinutes(5)
+                .isBefore(LocalDateTime.now());
     }
 
     private void refreshToken() {
-        try {
-            MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-            form.add("client_id", clientId);
-            form.add("client_secret", clientSecret);
-            form.add("grant_type", "client_credentials");
-            TwitchTokenResponse response = webClient.post()
-                    .uri("/oauth2/token")
-                    .bodyValue(form)
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .retrieve()
-                    .bodyToMono(TwitchTokenResponse.class)
-                    .block();
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("client_id", clientId);
+        form.add("client_secret", clientSecret);
+        form.add("grant_type", "client_credentials");
 
-            if (response != null && response.getAccessToken() != null) {
-                this.cachedToken = response.getAccessToken();
-                this.tokenExpiration = LocalDateTime.now().plusSeconds(response.getExpiresIn());
-                log.info("Token Twitch renouvelé avec succès, expiration: {}", tokenExpiration);
-            }
-        } catch (Exception e) {
-            log.error("Erreur lors du renouvellement du token Twitch: {}", e.getMessage());
+        TwitchTokenResponse response = webClient.post()
+                .uri("/oauth2/token")
+                .bodyValue(form)
+                .header("Content-Type",
+                        "application/x-www-form-urlencoded")
+                .retrieve()
+                .bodyToMono(TwitchTokenResponse.class)
+                .block();
+
+        if (response != null
+                && response.getAccessToken() != null) {
+            this.cachedToken = response.getAccessToken();
+            this.tokenExpiration = LocalDateTime.now()
+                    .plusSeconds(response.getExpiresIn());
+            log.info("Token Twitch renouvelé, expiration : {}",
+                    tokenExpiration);
+        } else {
+            log.error("Réponse Twitch invalide ou token absent");
         }
     }
 
-    // DTO pour la réponse de l'API Twitch
     private static class TwitchTokenResponse {
         @JsonProperty("access_token")
         private String access_token;
@@ -85,11 +115,7 @@ public class TwitchTokenService {
         @JsonProperty("expires_in")
         private int expires_in;
 
-        public String getAccessToken() {
-            return access_token;
-        }
-        public int getExpiresIn() {
-            return expires_in;
-        }
+        public String getAccessToken() { return access_token; }
+        public int getExpiresIn()      { return expires_in; }
     }
 }

@@ -9,6 +9,8 @@ import com.example.back.exception.ForbiddenException;
 import com.example.back.exception.NotFoundException;
 import com.example.back.repository.AvisRepository;
 import com.example.back.repository.JeuRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,10 +37,10 @@ public class AvisService {
         Avis avis = avisRepository
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
-                .orElse(Avis.builder()   // ← builder au lieu de new Avis()
-                .likes(0)        // ← valeurs explicites et claires
-                .dislikes(0)
-                .build());
+                .orElse(Avis.builder()
+                        .likes(0)
+                        .dislikes(0)
+                        .build());
 
         avis.setUtilisateur(utilisateur);
         avis.setJeu(jeu);
@@ -47,6 +49,7 @@ public class AvisService {
         return ResponseMapper.toAvisDto(avisRepository.save(avis));
     }
 
+    // Authentification requise — vérifiée au niveau du controller
     public AvisDto likerAvis(Long avisId, boolean like) {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->
@@ -63,6 +66,16 @@ public class AvisService {
                 .toList();
     }
 
+    // Version paginée pour éviter les réponses trop lourdes
+    public List<AvisDto> getAvisDuJeuPages(Long jeuId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return avisRepository.findByJeuIdOrderByDateDesc(jeuId, pageable)
+                .getContent()
+                .stream()
+                .map(ResponseMapper::toAvisDto)
+                .toList();
+    }
+
     public void supprimerAvis(Utilisateur utilisateur,
                               Long avisId) {
         Avis avis = avisRepository.findById(avisId)
@@ -71,6 +84,14 @@ public class AvisService {
         if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
             throw new ForbiddenException("Non autorisé");
         }
+        avisRepository.delete(avis);
+    }
+
+    // Suppression admin — sans vérification de propriété
+    public void supprimerAvisAdmin(Long avisId) {
+        Avis avis = avisRepository.findById(avisId)
+                .orElseThrow(() ->
+                        new NotFoundException("Avis introuvable"));
         avisRepository.delete(avis);
     }
 }

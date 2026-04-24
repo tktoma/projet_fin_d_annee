@@ -27,9 +27,12 @@ public class SecurityConfig {
     };
 
     private final JwtFilter jwtFilter;
+    private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter,
+                          RateLimitFilter rateLimitFilter) {
         this.jwtFilter = jwtFilter;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -45,22 +48,18 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // Swagger
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
 
-                        // Auth
                         .requestMatchers(HttpMethod.POST,
                                 "/api/auth/**").permitAll()
 
-                        // Jeux
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/jeux/recherche").permitAll()
+                        // Jeux — lecture publique, recherche IGDB requiert auth
                         .requestMatchers(HttpMethod.GET,
                                 "/api/jeux").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/jeux/**").permitAll()
 
-                        // Avis et notes publics
+                        // Avis et notes — lecture publique
                         .requestMatchers(HttpMethod.GET,
                                 "/api/avis/jeu/**").permitAll()
                         .requestMatchers(HttpMethod.GET,
@@ -76,12 +75,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/utilisateurs/*/avatar").permitAll()
 
-                        // Fichiers avatar servis statiquement
                         .requestMatchers("/avatars/**").permitAll()
 
                         // Tout le reste → token requis
                         .anyRequest().authenticated()
                 )
+                // Rate limiting avant JWT — rejette les IPs abusives le plus tôt possible
+                .addFilterBefore(rateLimitFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter,
                         UsernamePasswordAuthenticationFilter.class);
 

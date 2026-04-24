@@ -9,6 +9,8 @@ import com.example.back.exception.NotFoundException;
 import com.example.back.repository.JeuRepository;
 import com.example.back.repository.NoteRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +27,6 @@ public class NoteService {
         this.jeuRepository = jeuRepository;
     }
 
-
     // Ajouter ou modifier une note
     @Transactional
     public NoteDto noterJeu(Utilisateur utilisateur,
@@ -34,7 +35,6 @@ public class NoteService {
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
                         new NotFoundException("Jeu introuvable"));
-
 
         // Modifie si déjà noté, sinon crée
         Note note = noteRepository
@@ -48,18 +48,23 @@ public class NoteService {
         note.setDate(LocalDate.now());
         noteRepository.save(note);
 
-        // Met à jour la moyenne dans Jeu
-        Float moyenne = noteRepository
-                .calculerMoyenne(jeuId)
-                .orElse(0f);
-        jeu.setNoteMoyenne(moyenne);
-        jeuRepository.save(jeu);
+        recalculerMoyenne(jeu);
 
         return ResponseMapper.toNoteDto(note);
     }
 
     public List<NoteDto> getNotesDuJeu(Long jeuId) {
         return noteRepository.findByJeuId(jeuId)
+                .stream()
+                .map(ResponseMapper::toNoteDto)
+                .toList();
+    }
+
+    // Paginé pour éviter les réponses trop lourdes
+    public List<NoteDto> getNotesDuJeuPagees(Long jeuId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return noteRepository.findByJeuIdOrderByDateDesc(jeuId, pageable)
+                .getContent()
                 .stream()
                 .map(ResponseMapper::toNoteDto)
                 .toList();
@@ -72,13 +77,32 @@ public class NoteService {
                 .toList();
     }
 
-    public void supprimerNote(Utilisateur utilisateur,
-                              Long jeuId) {
+    @Transactional
+    public void supprimerNote(Utilisateur utilisateur, Long jeuId) {
         Note note = noteRepository
                 .findByUtilisateurIdAndJeuId(
                         utilisateur.getId(), jeuId)
                 .orElseThrow(() ->
                         new NotFoundException("Note introuvable"));
+
         noteRepository.delete(note);
+
+        // Recalculer la moyenne après suppression
+        Jeu jeu = jeuRepository.findById(jeuId)
+                .orElseThrow(() ->
+                        new NotFoundException("Jeu introuvable"));
+        recalculerMoyenne(jeu);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers privés
+    // -------------------------------------------------------------------------
+
+    private void recalculerMoyenne(Jeu jeu) {
+        Float moyenne = noteRepository
+                .calculerMoyenne(jeu.getId())
+                .orElse(0f);
+        jeu.setNoteMoyenne(moyenne);
+        jeuRepository.save(jeu);
     }
 }

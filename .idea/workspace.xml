@@ -5,21 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/TokenExpiredException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Bibliotheque.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Bibliotheque.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Note.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Utilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Utilisateur.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/BibliothequeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/BibliothequeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/ReportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/ReportService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Exception" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -207,7 +208,7 @@
       <workItem from="1776780230305" duration="973000" />
       <workItem from="1776850167023" duration="11913000" />
       <workItem from="1776936506019" duration="12812000" />
-      <workItem from="1777020653866" duration="4256000" />
+      <workItem from="1777020653866" duration="6724000" />
     </task>
     <servers />
   </component>

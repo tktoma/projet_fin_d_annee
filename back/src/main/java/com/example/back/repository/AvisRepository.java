@@ -19,4 +19,7 @@ public interface AvisRepository
             Long utilisateurId, Long jeuId);
     long countByUtilisateurId(Long utilisateurId);
     Page<Avis> findByUtilisateurIdOrderByDateDesc(Long utilisateurId, Pageable pageable);
+
+    // Pagination pour getAvisDuJeu — évite les réponses trop lourdes
+    Page<Avis> findByJeuIdOrderByDateDesc(Long jeuId, Pageable pageable);
 }

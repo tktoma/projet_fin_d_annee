@@ -42,20 +42,16 @@ public class AvatarService {
 
         validerFichier(fichier);
 
-        // Créer le dossier si nécessaire
         Path dossier = Paths.get(uploadDir);
         Files.createDirectories(dossier);
 
-        // Supprimer l'ancien avatar si existant
         avatarRepository.findByUtilisateurId(utilisateur.getId())
                 .ifPresent(ancien -> {
                     supprimerFichier(ancien.getUrl());
                     avatarRepository.delete(ancien);
                 });
 
-        // Générer un nom de fichier unique
-        String extension = getExtension(
-                fichier.getOriginalFilename());
+        String extension = getExtension(fichier.getOriginalFilename());
         String nomFichier = UUID.randomUUID() + extension;
         Path chemin = dossier.resolve(nomFichier);
 
@@ -63,7 +59,8 @@ public class AvatarService {
 
         Avatar avatar = new Avatar();
         avatar.setUtilisateur(utilisateur);
-        avatar.setUrl(baseUrl + "/" + nomFichier);
+        // Normalise l'URL — évite le double slash si baseUrl finit par "/"
+        avatar.setUrl(normaliserUrl(baseUrl) + "/" + nomFichier);
         avatar.setContentType(fichier.getContentType());
         avatar.setTaille(fichier.getSize());
 
@@ -106,8 +103,7 @@ public class AvatarService {
 
     private void supprimerFichier(String url) {
         try {
-            String nomFichier = url.substring(
-                    url.lastIndexOf("/") + 1);
+            String nomFichier = url.substring(url.lastIndexOf("/") + 1);
             Path chemin = Paths.get(uploadDir, nomFichier);
             Files.deleteIfExists(chemin);
         } catch (IOException e) {
@@ -120,7 +116,14 @@ public class AvatarService {
         if (nomFichier == null || !nomFichier.contains(".")) {
             return ".jpg";
         }
-        return nomFichier.substring(
-                nomFichier.lastIndexOf("."));
+        return nomFichier.substring(nomFichier.lastIndexOf("."));
+    }
+
+    // Retire le slash final s'il existe — évite les doubles slashes dans l'URL
+    private String normaliserUrl(String url) {
+        if (url != null && url.endsWith("/")) {
+            return url.substring(0, url.length() - 1);
+        }
+        return url;
     }
 }

@@ -13,8 +13,10 @@ import com.example.back.repository.UtilisateurRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,18 +30,6 @@ public class UtilisateurService {
     private final AvisRepository avisRepository;
     private final NoteRepository noteRepository;
     private final BibliothequeRepository bibliothequeRepository;
-
-    private AuthResponse createAuthResponse(Utilisateur utilisateur) {
-        String token = jwtUtil.generateToken(utilisateur);
-        String refreshToken = jwtUtil.generateRefreshToken();
-        utilisateur.setRefreshToken(refreshToken);
-        utilisateur.setRefreshTokenExpiration(
-                LocalDateTime.now().plusDays(30));
-        utilisateurRepository.save(utilisateur);
-
-        return new AuthResponse(token, refreshToken,
-                utilisateur.getPseudo(), utilisateur.getId());
-    }
 
     public UtilisateurService(
             UtilisateurRepository utilisateurRepository,
@@ -56,6 +46,16 @@ public class UtilisateurService {
         this.bibliothequeRepository = bibliothequeRepository;
     }
 
+    private AuthResponse createAuthResponse(Utilisateur utilisateur) {
+        String token = jwtUtil.generateToken(utilisateur);
+        String refreshToken = jwtUtil.generateRefreshToken();
+        utilisateur.setRefreshToken(refreshToken);
+        utilisateur.setRefreshTokenExpiration(
+                LocalDateTime.now().plusDays(30));
+        utilisateurRepository.save(utilisateur);
+        return new AuthResponse(token, refreshToken,
+                utilisateur.getPseudo(), utilisateur.getId());
+    }
 
     // Inscription
     @Transactional
@@ -85,9 +85,10 @@ public class UtilisateurService {
                 .orElseThrow(() ->
                         new NotFoundException("Email introuvable"));
 
+        // BadCredentialsException → 401 via GlobalExceptionHandler
         if (!passwordEncoder.matches(
                 request.getMotDePasse(), utilisateur.getMdp())) {
-            throw new RuntimeException("Mot de passe incorrect");
+            throw new BadCredentialsException("Mot de passe incorrect");
         }
 
         return createAuthResponse(utilisateur);
@@ -111,13 +112,15 @@ public class UtilisateurService {
 
         return createAuthResponse(utilisateur);
     }
+
     // -------------------------------------------------------------------------
     // Profil public
     // -------------------------------------------------------------------------
 
     public ProfilResponse getProfilPublic(Long utilisateurId) {
         Utilisateur u = utilisateurRepository.findById(utilisateurId)
-                .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
+                .orElseThrow(() ->
+                        new NotFoundException("Utilisateur introuvable"));
 
         Pageable pageable = PageRequest.of(0, 5);
 
@@ -146,8 +149,8 @@ public class UtilisateurService {
                 (int) avisRepository.countByUtilisateurId(utilisateurId));
         profil.setNombreNotes(
                 (int) noteRepository.countByUtilisateurId(utilisateurId));
-        profil.setDerniersAvis(derniers5Avis);      // ✅ assignation manquante
-        profil.setDernieresNotes(dernieres5Notes);  // ✅ assignation manquante
+        profil.setDerniersAvis(derniers5Avis);
+        profil.setDernieresNotes(dernieres5Notes);
 
         return profil;
     }
@@ -170,7 +173,7 @@ public class UtilisateurService {
     }
 
     // -------------------------------------------------------------------------
-    // Helpers privés — conversions en DTO
+    // Helpers privés
     // -------------------------------------------------------------------------
 
     private void verifierExistence(Long utilisateurId) {

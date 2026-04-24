@@ -36,11 +36,14 @@ public class NoteController {
                 noteService.noterJeu(u, jeuId, valeur));
     }
 
+    // Paginé — évite les réponses trop lourdes sur les jeux populaires
     @GetMapping("/jeu/{jeuId}")
     public ResponseEntity<List<NoteDto>> getNotesDuJeu(
-            @PathVariable Long jeuId) {
+            @PathVariable Long jeuId,
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(
-                noteService.getNotesDuJeu(jeuId));
+                noteService.getNotesDuJeuPagees(jeuId, page, size));
     }
 
     @GetMapping("/mes-notes")

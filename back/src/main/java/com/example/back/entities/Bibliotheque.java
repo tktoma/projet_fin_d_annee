@@ -6,6 +6,11 @@ import java.time.LocalDate;
 
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_bibliotheque_utilisateur_jeu",
+                columnNames = {"id_utilisateur", "id_jeu"})
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
