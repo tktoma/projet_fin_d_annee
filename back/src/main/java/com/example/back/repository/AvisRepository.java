@@ -17,5 +17,6 @@ public interface AvisRepository
     List<Avis> findByUtilisateurId(Long utilisateurId);
     Optional<Avis> findByUtilisateurIdAndJeuId(
             Long utilisateurId, Long jeuId);
+    long countByUtilisateurId(Long utilisateurId);
     Page<Avis> findByUtilisateurIdOrderByDateDesc(Long utilisateurId, Pageable pageable);
 }

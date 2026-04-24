@@ -2,17 +2,15 @@ package com.example.back.service;
 
 import com.example.back.config.JwtUtil;
 import com.example.back.dto.*;
-import com.example.back.entities.Avis;
-import com.example.back.entities.Note;
 import com.example.back.entities.Utilisateur;
 import com.example.back.exception.ConflictException;
 import com.example.back.exception.NotFoundException;
+import com.example.back.exception.TokenExpiredException;
 import com.example.back.repository.AvisRepository;
 import com.example.back.repository.BibliothequeRepository;
 import com.example.back.repository.NoteRepository;
 import com.example.back.repository.UtilisateurRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -108,7 +106,7 @@ public class UtilisateurService {
 
         if (utilisateur.getRefreshTokenExpiration()
                 .isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Refresh token expiré");
+            throw new TokenExpiredException("Refresh token expiré");
         }
 
         return createAuthResponse(utilisateur);
@@ -119,17 +117,21 @@ public class UtilisateurService {
 
     public ProfilResponse getProfilPublic(Long utilisateurId) {
         Utilisateur u = utilisateurRepository.findById(utilisateurId)
-                .orElseThrow(() ->
-                        new NotFoundException("Utilisateur introuvable"));
+                .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
 
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Avis> avisPage = avisRepository.findByUtilisateurIdOrderByDateDesc(utilisateurId, pageable);
-        List<AvisDto> derniers5Avis = avisPage.getContent().stream()
+
+        List<AvisDto> derniers5Avis = avisRepository
+                .findByUtilisateurIdOrderByDateDesc(utilisateurId, pageable)
+                .getContent()
+                .stream()
                 .map(ResponseMapper::toAvisDto)
                 .toList();
 
-        Page<Note> notesPage = noteRepository.findByUtilisateurIdOrderByDateDesc(utilisateurId, pageable);
-        List<NoteDto> dernieres5Notes = notesPage.getContent().stream()
+        List<NoteDto> dernieres5Notes = noteRepository
+                .findByUtilisateurIdOrderByDateDesc(utilisateurId, pageable)
+                .getContent()
+                .stream()
                 .map(ResponseMapper::toNoteDto)
                 .toList();
 
@@ -139,14 +141,13 @@ public class UtilisateurService {
         profil.setRole(u.getRole());
         profil.setDateCompte(u.getDateCompte());
         profil.setNombreJeux(
-                bibliothequeRepository
-                        .findByUtilisateurId(utilisateurId).size());
+                (int) bibliothequeRepository.countByUtilisateurId(utilisateurId));
         profil.setNombreAvis(
-                avisRepository.findByUtilisateurId(utilisateurId).size());
+                (int) avisRepository.countByUtilisateurId(utilisateurId));
         profil.setNombreNotes(
-                noteRepository.findByUtilisateurId(utilisateurId).size());
-        profil.setDerniersAvis(derniers5Avis);
-        profil.setDernieresNotes(dernieres5Notes);
+                (int) noteRepository.countByUtilisateurId(utilisateurId));
+        profil.setDerniersAvis(derniers5Avis);      // ✅ assignation manquante
+        profil.setDernieresNotes(dernieres5Notes);  // ✅ assignation manquante
 
         return profil;
     }

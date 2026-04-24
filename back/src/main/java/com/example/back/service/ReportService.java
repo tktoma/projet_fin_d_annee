@@ -8,6 +8,7 @@ import com.example.back.entities.Report;
 import com.example.back.entities.StatutReport;
 import com.example.back.entities.TypeContenu;
 import com.example.back.entities.Utilisateur;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.ReportRepository;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +84,7 @@ public class ReportService {
                                   TraiterReportRequest request) {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow(() ->
-                        new RuntimeException("Report introuvable"));
+                        new NotFoundException("Report introuvable"));
 
         report.setStatut(request.getStatut());
         report.setModerateur(moderateur);
@@ -97,7 +98,7 @@ public class ReportService {
     public void supprimer(Long reportId) {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow(() ->
-                        new RuntimeException("Report introuvable"));
+                        new NotFoundException("Report introuvable"));
         reportRepository.delete(report);
     }
 }

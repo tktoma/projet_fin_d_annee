@@ -5,6 +5,8 @@ import com.example.back.dto.UtilisateurResponse;
 import com.example.back.entities.Avis;
 import com.example.back.entities.Role;
 import com.example.back.entities.Utilisateur;
+import com.example.back.exception.ForbiddenException;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.AvisRepository;
 import com.example.back.repository.UtilisateurRepository;
 import org.springframework.stereotype.Service;
@@ -29,19 +31,19 @@ public class AdminService {
                                            Utilisateur demandeur) {
         if (nouveauRole == Role.SUPERADMIN
                 && demandeur.getRole() != Role.SUPERADMIN) {
-            throw new RuntimeException(
+            throw new ForbiddenException(
                     "Seul un SUPERADMIN peut créer un SUPERADMIN");
         }
 
         Utilisateur cible = utilisateurRepository
                 .findById(utilisateurId)
                 .orElseThrow(() ->
-                        new RuntimeException("Utilisateur introuvable"));
+                        new NotFoundException("Utilisateur introuvable"));
 
         if (demandeur.getRole() == Role.ADMIN
                 && (cible.getRole() == Role.ADMIN
                 || cible.getRole() == Role.SUPERADMIN)) {
-            throw new RuntimeException("Non autorisé");
+            throw new ForbiddenException("Non autorisé");
         }
 
         cible.setRole(nouveauRole);
@@ -61,16 +63,16 @@ public class AdminService {
         Utilisateur cible = utilisateurRepository
                 .findById(utilisateurId)
                 .orElseThrow(() ->
-                        new RuntimeException("Utilisateur introuvable"));
+                        new NotFoundException("Utilisateur introuvable"));
 
         if (cible.getRole() == Role.SUPERADMIN) {
-            throw new RuntimeException(
+            throw new ForbiddenException(
                     "Impossible de supprimer un SUPERADMIN");
         }
         // Un ADMIN ne peut pas supprimer un autre ADMIN
         if (demandeur.getRole() == Role.ADMIN
                 && cible.getRole() == Role.ADMIN) {
-            throw new RuntimeException("Non autorisé");
+            throw new ForbiddenException("Non autorisé");
         }
         utilisateurRepository.delete(cible);
     }

@@ -3,7 +3,9 @@ package com.example.back.controller;
 import com.example.back.dto.AuthResponse;
 import com.example.back.dto.LoginRequest;
 import com.example.back.dto.RegisterRequest;
+import com.example.back.exception.ConflictException;
 import com.example.back.exception.GlobalExceptionHandler;
+import com.example.back.exception.NotFoundException;
 import com.example.back.service.UtilisateurService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -170,13 +172,12 @@ class AuthControllerTest {
         @DisplayName("500 si le service lève une RuntimeException")
         void inscription_500_emailDejaPris() throws Exception {
             when(SERVICE_MOCK.inscrire(any()))
-                    .thenThrow(new RuntimeException("Email déjà utilisé"));
+                    .thenThrow(new ConflictException("Email déjà utilisé")); // ← exception métier
 
             mockMvc.perform(post("/api/auth/inscription")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper
-                                    .writeValueAsString(registerRequest())))
-                    .andExpect(status().isConflict())
+                            .content(objectMapper.writeValueAsString(registerRequest())))
+                    .andExpect(status().isConflict())          // ← 409 maintenant cohérent
                     .andExpect(jsonPath("$.message").value("Email déjà utilisé"));
         }
     }
@@ -233,7 +234,7 @@ class AuthControllerTest {
         @DisplayName("500 si le service lève une RuntimeException")
         void connexion_500_mauvaisMotDePasse() throws Exception {
             when(SERVICE_MOCK.connecter(any()))
-                    .thenThrow(new RuntimeException("Mot de passe incorrect"));
+                    .thenThrow(new NotFoundException("Mot de passe incorrect"));
 
             mockMvc.perform(post("/api/auth/connexion")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -278,7 +279,7 @@ class AuthControllerTest {
             mockMvc.perform(post("/api/auth/refresh")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{\"refreshToken\":\"token-expire\"}"))
-                    .andExpect(status().isNotFound())
+                    .andExpect(status().isUnauthorized())
                     .andExpect(jsonPath("$.message")
                             .value("Refresh token expiré"));
         }

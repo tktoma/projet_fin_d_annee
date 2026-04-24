@@ -67,7 +67,7 @@ public class AvisService {
                               Long avisId) {
         Avis avis = avisRepository.findById(avisId)
                 .orElseThrow(() ->
-                        new RuntimeException("Avis introuvable"));
+                        new NotFoundException("Avis introuvable"));
         if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
             throw new ForbiddenException("Non autorisé");
         }

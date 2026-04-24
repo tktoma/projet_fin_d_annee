@@ -108,4 +108,12 @@ public class GlobalExceptionHandler {
                         HttpStatus.INTERNAL_SERVER_ERROR.value()),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleTokenExpiredException(
+            TokenExpiredException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse(ex.getMessage(),
+                        HttpStatus.UNAUTHORIZED.value()),
+                HttpStatus.UNAUTHORIZED);
+    }
 }

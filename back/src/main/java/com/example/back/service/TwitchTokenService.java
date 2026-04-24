@@ -2,6 +2,8 @@ package com.example.back.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +19,7 @@ public class TwitchTokenService {
     private String cachedToken;
     private LocalDateTime tokenExpiration;
     private final WebClient webClient;
+    private static final Logger log = LoggerFactory.getLogger(TwitchTokenService.class);
 
     @Value("${igdb.client-id}")
     private String clientId;
@@ -67,10 +70,10 @@ public class TwitchTokenService {
             if (response != null && response.getAccessToken() != null) {
                 this.cachedToken = response.getAccessToken();
                 this.tokenExpiration = LocalDateTime.now().plusSeconds(response.getExpiresIn());
-                System.out.println("Token Twitch renouvelé avec succès, expiration: " + tokenExpiration);
+                log.info("Token Twitch renouvelé avec succès, expiration: {}", tokenExpiration);
             }
         } catch (Exception e) {
-            System.err.println("Erreur lors du renouvellement du token Twitch: " + e.getMessage());
+            log.error("Erreur lors du renouvellement du token Twitch: {}", e.getMessage());
         }
     }
 

@@ -17,7 +17,7 @@ public interface BibliothequeRepository
             Long utilisateurId, Long jeuId);
     boolean existsByUtilisateurIdAndJeuId(
             Long utilisateurId, Long jeuId);
-
+    long countByUtilisateurId(Long utilisateurId);
     // Filtrer par statut
     List<Bibliotheque> findByUtilisateurIdAndStatut(
             Long utilisateurId, StatutJeu statut);

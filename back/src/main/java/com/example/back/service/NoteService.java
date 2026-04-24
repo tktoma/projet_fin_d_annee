@@ -30,10 +30,6 @@ public class NoteService {
     @Transactional
     public NoteDto noterJeu(Utilisateur utilisateur,
                             Long jeuId, Float valeur) {
-        if (valeur < 0 || valeur > 10) {
-            throw new RuntimeException(
-                    "La note doit être entre 0 et 10");
-        }
 
         Jeu jeu = jeuRepository.findById(jeuId)
                 .orElseThrow(() ->
