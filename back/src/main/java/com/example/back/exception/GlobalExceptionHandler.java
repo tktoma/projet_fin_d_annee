@@ -9,12 +9,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Validation des @RequestBody (@Valid sur les DTOs)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex) {
@@ -26,13 +28,37 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
 
-    // Validation des @RequestParam (@Validated sur le controller)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(
             ConstraintViolationException ex) {
         String message = ex.getConstraintViolations().stream()
                 .map(v -> v.getPropertyPath() + " : " + v.getMessage())
                 .collect(Collectors.joining(", "));
+        return new ResponseEntity<>(
+                new ErrorResponse(message, HttpStatus.BAD_REQUEST.value()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Gère les valeurs invalides pour les @RequestParam/@PathVariable typés
+     * (ex : Role inconnu, StatutJeu inconnu, Long non parseable…).
+     * Retourne un message clair avec les valeurs acceptées si c'est un enum.
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex) {
+        String message;
+        Class<?> requiredType = ex.getRequiredType();
+        if (requiredType != null && requiredType.isEnum()) {
+            String valeurs = Arrays.stream(requiredType.getEnumConstants())
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+            message = "Valeur invalide pour '" + ex.getName()
+                    + "'. Valeurs acceptées : " + valeurs;
+        } else {
+            message = "Paramètre '" + ex.getName()
+                    + "' invalide : " + ex.getValue();
+        }
         return new ResponseEntity<>(
                 new ErrorResponse(message, HttpStatus.BAD_REQUEST.value()),
                 HttpStatus.BAD_REQUEST);
@@ -77,6 +103,7 @@ public class GlobalExceptionHandler {
                         HttpStatus.FORBIDDEN.value()),
                 HttpStatus.FORBIDDEN);
     }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(
             NotFoundException ex) {
@@ -101,13 +128,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException() {
-        return new ResponseEntity<>(
-                new ErrorResponse("Une erreur inattendue est survenue",
-                        HttpStatus.INTERNAL_SERVER_ERROR.value()),
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ErrorResponse> handleTokenExpiredException(
             TokenExpiredException ex) {
@@ -115,5 +135,13 @@ public class GlobalExceptionHandler {
                 new ErrorResponse(ex.getMessage(),
                         HttpStatus.UNAUTHORIZED.value()),
                 HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Une erreur inattendue est survenue",
+                        HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

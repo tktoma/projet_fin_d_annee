@@ -5,6 +5,7 @@ import {Navbar} from "./component/Navbar.jsx";
 import {Bibliotheque} from "./pages/Bibliotheque.jsx";
 import {MaBibliotheque} from "./pages/MaBibliotheque.jsx";
 import {Connexion} from "./pages/Connexion.jsx";
+import {Inscription} from "./pages/Inscription.jsx";
 
 
 function App() {
@@ -17,15 +18,16 @@ function App() {
         { path: "bibliotheque", element: <Bibliotheque /> },
         { path: "ma_bibliotheque", element: <MaBibliotheque /> },
         { path: "connexion", element: <Connexion /> },
+        { path: "inscription", element: <Inscription />},
       ],
     },
   ]);
 
   function Root() {
     return (
-        <div className="min-h-screen bg-primary-black text-white">
+        <div className="bg-primary-black text-white">
           <Navbar />
-          <div className="app-container">
+          <div className="app-container w-full">
             <Outlet />
           </div>
         </div>

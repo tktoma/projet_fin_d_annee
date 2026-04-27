@@ -4,22 +4,23 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  * Rate limiting simple sur les endpoints d'authentification.
  * Limite à 10 tentatives par IP sur une fenêtre glissante de 15 minutes.
- * Pour la production, préférer Bucket4j + Redis pour un rate limiting
- * distribué sur plusieurs instances.
+ * La tâche @Scheduled purge les entrées expirées toutes les 30 minutes
+ * pour éviter une fuite mémoire sur les IPs distinctes.
+ * Pour la production multi-instances, préférer Bucket4j + Redis.
  */
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
@@ -33,7 +34,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        // Applique uniquement sur les endpoints d'auth sensibles
         return !path.equals("/api/auth/connexion")
                 && !path.equals("/api/auth/inscription");
     }
@@ -50,7 +50,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
         attempts.compute(ip, (key, val) -> {
             if (val == null || now - val[1] > WINDOW_MS) {
-                // Nouvelle fenêtre
                 return new long[]{1, now};
             }
             val[0]++;
@@ -68,6 +67,18 @@ public class RateLimitFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Purge les entrées dont la fenêtre de 15 minutes est expirée.
+     * Tourne toutes les 30 minutes — empêche la croissance illimitée
+     * de la map en cas de nombreuses IPs distinctes.
+     */
+    @Scheduled(fixedRate = 30 * 60 * 1000L)
+    public void purgerEntreesExpirees() {
+        long now = Instant.now().toEpochMilli();
+        attempts.entrySet().removeIf(entry ->
+                now - entry.getValue()[1] > WINDOW_MS);
     }
 
     private String getClientIp(HttpServletRequest request) {

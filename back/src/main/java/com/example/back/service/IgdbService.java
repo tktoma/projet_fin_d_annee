@@ -7,6 +7,8 @@ import com.example.back.dto.ResponseMapper;
 import com.example.back.entities.Jeu;
 import com.example.back.repository.JeuRepository;
 import com.example.back.repository.JeuSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,9 @@ import java.util.List;
 @Service
 public class IgdbService {
 
+    private static final Logger log =
+            LoggerFactory.getLogger(IgdbService.class);
+
     private final WebClient igdbWebClient;
     private final JeuRepository jeuRepository;
 
@@ -31,21 +36,12 @@ public class IgdbService {
         this.igdbWebClient = igdbWebClient;
         this.jeuRepository = jeuRepository;
     }
-    /**
-     * Recherche live sur IGDB.
-     * Le résultat est mis en cache 10 minutes par titre — évite
-     * les appels répétés pour la même saisie et respecte la limite
-     * de 4 req/sec de l'API IGDB.
-     * La clé est normalisée en minuscules pour que "Zelda" et "zelda"
-     * partagent la même entrée de cache.
-     */
+
     @Cacheable(
             value  = "recherches-igdb",
             key    = "#titre.toLowerCase().trim()",
             unless = "#result == null || #result.isEmpty()"
     )
-
-    // Recherche live sur IGDB — inchangée
     public List<IgdbGameDto> rechercherJeu(String titre) {
         String body = "fields name,summary,cover.url,"
                 + "genres.name,platforms.name,"
@@ -62,27 +58,16 @@ public class IgdbService {
                 .defaultIfEmpty(List.of())
                 .block();
     }
-    /**
-     * Vide tout le cache des recherches IGDB.
-     * Utile si les données IGDB ont changé et qu'on veut forcer
-     * un rafraîchissement sans attendre l'expiration des 10 minutes.
-     * Appelable via le endpoint d'admin si besoin.
-     */
+
     @CacheEvict(value = "recherches-igdb", allEntries = true)
     public void viderCacheRecherches() {
         // Corps vide intentionnellement — l'annotation fait le travail
     }
-    // Import d'un jeu unique — inchangé
-    public JeuResponse importerJeu(Long igdbId) {
 
+    public JeuResponse importerJeu(Long igdbId) {
         return ResponseMapper.toJeuResponse(importerEntite(igdbId));
     }
 
-    /**
-     * Recherche locale avec filtres combinés et optionnels.
-     * Tous les paramètres peuvent être null — dans ce cas le filtre
-     * est ignoré et on retourne tous les jeux.
-     */
     public Page<JeuResponse> rechercherAvecFiltres(
             String titre,
             String genre,
@@ -106,7 +91,6 @@ public class IgdbService {
         return new PageImpl<>(dtos, pageable, page.getTotalElements());
     }
 
-    // Import paginé depuis IGDB — inchangé
     public ImportResult importerJeuxPagines(int page, int limit) {
         int offset = page * limit;
 
@@ -135,8 +119,8 @@ public class IgdbService {
                             jeuRepository.save(convertirDtoEnJeu(dto)));
                 }
             } catch (Exception e) {
-                System.err.println("Erreur import "
-                        + dto.getName() + ": " + e.getMessage());
+                log.error("Erreur import du jeu '{}' : {}",
+                        dto.getName(), e.getMessage(), e);
             }
         }
 

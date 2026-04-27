@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +24,17 @@ public class AvatarService {
     private static final long TAILLE_MAX = 2 * 1024 * 1024; // 2 Mo
     private static final List<String> TYPES_AUTORISES =
             List.of("image/jpeg", "image/png", "image/webp");
+
+    /**
+     * Mapping contentType → extension.
+     * On dérive l'extension du type MIME réel plutôt que du nom de fichier
+     * pour éviter la discordance (ex : fichier.jpg uploadé en PNG).
+     */
+    private static final Map<String, String> EXTENSION_PAR_TYPE = Map.of(
+            "image/jpeg", ".jpg",
+            "image/png",  ".png",
+            "image/webp", ".webp"
+    );
 
     @Value("${avatar.upload-dir:uploads/avatars}")
     private String uploadDir;
@@ -51,7 +63,9 @@ public class AvatarService {
                     avatarRepository.delete(ancien);
                 });
 
-        String extension = getExtension(fichier.getOriginalFilename());
+        // Extension dérivée du contentType — pas du nom de fichier
+        String extension = EXTENSION_PAR_TYPE
+                .getOrDefault(fichier.getContentType(), ".jpg");
         String nomFichier = UUID.randomUUID() + extension;
         Path chemin = dossier.resolve(nomFichier);
 
@@ -59,7 +73,6 @@ public class AvatarService {
 
         Avatar avatar = new Avatar();
         avatar.setUtilisateur(utilisateur);
-        // Normalise l'URL — évite le double slash si baseUrl finit par "/"
         avatar.setUrl(normaliserUrl(baseUrl) + "/" + nomFichier);
         avatar.setContentType(fichier.getContentType());
         avatar.setTaille(fichier.getSize());
@@ -112,14 +125,6 @@ public class AvatarService {
         }
     }
 
-    private String getExtension(String nomFichier) {
-        if (nomFichier == null || !nomFichier.contains(".")) {
-            return ".jpg";
-        }
-        return nomFichier.substring(nomFichier.lastIndexOf("."));
-    }
-
-    // Retire le slash final s'il existe — évite les doubles slashes dans l'URL
     private String normaliserUrl(String url) {
         if (url != null && url.endsWith("/")) {
             return url.substring(0, url.length() - 1);

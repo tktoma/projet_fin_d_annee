@@ -27,7 +27,7 @@ public class Jeu extends BaseEntity{
     private LocalDate dateSortie;
     @Column
     private String source;
-    @Column(nullable = false, precision = 2)
+    @Column(columnDefinition = "DECIMAL(4,2)" , nullable = false)
     private float noteMoyenne;
     @Column
     private String externalId;     // id dans la BDD IGBD

@@ -5,22 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/AvisRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/AvisReaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/ReactionType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisReactionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/OpenApiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/OpenApiConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/NoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Bibliotheque.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Bibliotheque.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Note.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Utilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Utilisateur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/NoteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +41,7 @@
       <list>
         <option value="Interface" />
         <option value="Exception" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -97,7 +107,7 @@
       <recent name="G:\projet\back\src\test\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BackApplication">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
@@ -174,6 +184,13 @@
       </set>
     </attachedChunks>
   </component>
+  <component name="SpringProfilesService">
+    <option name="activeProfiles">
+      <map>
+        <entry key="back" value="dev" />
+      </map>
+    </option>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="" />
@@ -209,6 +226,9 @@
       <workItem from="1776850167023" duration="11913000" />
       <workItem from="1776936506019" duration="12812000" />
       <workItem from="1777020653866" duration="6724000" />
+      <workItem from="1777276544417" duration="29000" />
+      <workItem from="1777276587369" duration="1958000" />
+      <workItem from="1777278596344" duration="5407000" />
     </task>
     <servers />
   </component>

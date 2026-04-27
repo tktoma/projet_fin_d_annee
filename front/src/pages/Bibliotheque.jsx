@@ -1,10 +1,8 @@
 export const Bibliotheque = () => {
     return (
-        <div className="min-h-screen bg-primary-black text-white flex flex-col items-center justify-center">
-            <h1 className="text-6xl font-bold text-primary-red mb-8">Bibliotheque</h1>
-            <p className="text-xl text-gray-300 max-w-2xl text-center px-4">
-                Parcourez notre collection complète de jeux vidéo
-            </p>
+        <div>
+            <h1>Bibliotheque</h1>
+            <p>Parcourez notre collection complète de jeux vidéo</p>
         </div>
     );
 };

@@ -1,10 +1,10 @@
 package com.example.back.controller;
 
 import com.example.back.dto.AvisDto;
+import com.example.back.dto.AvisRequest;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.AvisService;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -26,34 +26,23 @@ public class AvisController {
     @PostMapping("/jeu/{jeuId}")
     public ResponseEntity<AvisDto> ajouterAvis(
             @PathVariable Long jeuId,
-            @RequestBody
-            @NotBlank(message = "Le texte ne peut pas être vide")
-            @Size(min = 10, max = 2000,
-                    message = "Le texte doit faire entre 10 et 2000 caractères")
-            String texte,
+            @Valid @RequestBody AvisRequest request,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
-        if (u == null) {
-            throw new IllegalStateException("Utilisateur non authentifié");
-        }
         return ResponseEntity.ok(
-                avisService.ajouterAvis(u, jeuId, texte));
+                avisService.ajouterAvis(u, jeuId, request.getTexte()));
     }
 
-    // Authentification requise — empêche le spam de likes anonymes
     @PostMapping("/{avisId}/like")
     public ResponseEntity<AvisDto> liker(
             @PathVariable Long avisId,
             @RequestParam boolean like,
             Authentication auth) {
-        if (auth == null || auth.getPrincipal() == null) {
-            throw new IllegalStateException("Utilisateur non authentifié");
-        }
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
         return ResponseEntity.ok(
-                avisService.likerAvis(avisId, like));
+                avisService.likerAvis(avisId, like, u));
     }
 
-    // Paginé — évite les réponses trop lourdes sur les jeux populaires
     @GetMapping("/jeu/{jeuId}")
     public ResponseEntity<List<AvisDto>> getAvisDuJeu(
             @PathVariable Long jeuId,
@@ -63,14 +52,19 @@ public class AvisController {
                 avisService.getAvisDuJeuPages(jeuId, page, size));
     }
 
+    @GetMapping("/mes-avis")
+    public ResponseEntity<List<AvisDto>> getMesAvis(
+            Authentication auth) {
+        Utilisateur u = (Utilisateur) auth.getPrincipal();
+        return ResponseEntity.ok(
+                avisService.getMesAvis(u.getId()));
+    }
+
     @DeleteMapping("/{avisId}")
     public ResponseEntity<Void> supprimer(
             @PathVariable Long avisId,
             Authentication auth) {
         Utilisateur u = (Utilisateur) auth.getPrincipal();
-        if (u == null) {
-            throw new IllegalStateException("Utilisateur non authentifié");
-        }
         avisService.supprimerAvis(u, avisId);
         return ResponseEntity.noContent().build();
     }

@@ -1,10 +1,29 @@
 export const Connexion = () => {
     return (
-        <div className="min-h-screen bg-primary-black text-white flex flex-col items-center justify-center">
-            <h1 className="text-6xl font-bold text-primary-red mb-8">Connexion</h1>
-            <p className="text-xl text-gray-300 max-w-2xl text-center px-4">
-                Connectez-vous pour accéder à votre bibliothèque
-            </p>
+        <div>
+            <div>
+                <fieldset>
+                    <h2>Connexion</h2>
+
+                    <div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" className="input placeholder-gray-400" placeholder="Email" required />
+                        </div>
+
+                        <div>
+                            <label>Mot de passe</label>
+                            <input type="password" className="input placeholder-gray-400" placeholder="Mot de passe" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <button className>
+                            Connexion
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
         </div>
     );
 };

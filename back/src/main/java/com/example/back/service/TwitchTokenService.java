@@ -2,6 +2,7 @@ package com.example.back.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,15 +42,13 @@ public class TwitchTokenService {
         try {
             refreshToken();
         } catch (Exception e) {
-            // Ne pas bloquer le démarrage si les credentials IGDB
-            // sont absents (env de test, par exemple)
             log.warn("Impossible d'obtenir le token Twitch au démarrage "
                             + "— les appels IGDB échoueront jusqu'au prochain refresh : {}",
                     e.getMessage());
         }
     }
 
-    @Scheduled(fixedRate = 300_000) // Toutes les 5 minutes
+    @Scheduled(fixedRate = 300_000)
     public void checkAndRefreshToken() {
         if (shouldRefreshToken()) {
             try {
@@ -61,11 +60,6 @@ public class TwitchTokenService {
         }
     }
 
-    /**
-     * Retourne le token courant.
-     * Lève une exception claire si le token n'a jamais pu être obtenu,
-     * plutôt que de propager un NullPointerException cryptique.
-     */
     public String getCurrentToken() {
         if (cachedToken == null) {
             throw new IllegalStateException(
@@ -108,14 +102,12 @@ public class TwitchTokenService {
         }
     }
 
+    @Data
     private static class TwitchTokenResponse {
         @JsonProperty("access_token")
-        private String access_token;
+        private String accessToken;
 
         @JsonProperty("expires_in")
-        private int expires_in;
-
-        public String getAccessToken() { return access_token; }
-        public int getExpiresIn()      { return expires_in; }
+        private int expiresIn;
     }
 }

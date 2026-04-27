@@ -7,8 +7,15 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
+/**
+ * Swagger/OpenAPI — désactivé en profil prod.
+ * La whitelist dans SecurityConfig reste en place mais le bean
+ * n'est pas créé, donc /swagger-ui.html retourne 404 en prod.
+ */
 @Configuration
+@Profile("!prod")
 public class OpenApiConfig {
 
     private static final String SCHEME_NAME = "bearerAuth";
