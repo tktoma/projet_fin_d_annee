@@ -5,30 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/AvisRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/AvisReaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/ReactionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/AvisReactionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/CorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/OpenApiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/OpenApiConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/RateLimitFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvatarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/AvisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/TwitchTokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/component/HeaderItem.jsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,10 +95,11 @@
       <recent name="G:\projet\front\src\component" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\projet\front\src" />
       <recent name="G:\projet\back\src\test\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="Spring Boot.BackApplication">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
@@ -228,7 +220,8 @@
       <workItem from="1777020653866" duration="6724000" />
       <workItem from="1777276544417" duration="29000" />
       <workItem from="1777276587369" duration="1958000" />
-      <workItem from="1777278596344" duration="5407000" />
+      <workItem from="1777278596344" duration="12943000" />
+      <workItem from="1777365303464" duration="4166000" />
     </task>
     <servers />
   </component>

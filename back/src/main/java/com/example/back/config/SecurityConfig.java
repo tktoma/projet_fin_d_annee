@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +29,14 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final RateLimitFilter rateLimitFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     public SecurityConfig(JwtFilter jwtFilter,
-                          RateLimitFilter rateLimitFilter) {
+                          RateLimitFilter rateLimitFilter,
+                          CorsConfigurationSource corsConfigurationSource) {
         this.jwtFilter = jwtFilter;
         this.rateLimitFilter = rateLimitFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
@@ -43,6 +47,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -53,19 +58,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,
                                 "/api/auth/**").permitAll()
 
-                        // Jeux — lecture publique, recherche IGDB requiert auth
                         .requestMatchers(HttpMethod.GET,
                                 "/api/jeux").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/jeux/**").permitAll()
 
-                        // Avis et notes — lecture publique
                         .requestMatchers(HttpMethod.GET,
                                 "/api/avis/jeu/**").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/notes/jeu/**").permitAll()
 
-                        // Profils et avatars publics
                         .requestMatchers(HttpMethod.GET,
                                 "/api/users/*/profil").permitAll()
                         .requestMatchers(HttpMethod.GET,
@@ -77,10 +79,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/avatars/**").permitAll()
 
-                        // Tout le reste → token requis
                         .anyRequest().authenticated()
                 )
-                // Rate limiting avant JWT — rejette les IPs abusives le plus tôt possible
                 .addFilterBefore(rateLimitFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter,
