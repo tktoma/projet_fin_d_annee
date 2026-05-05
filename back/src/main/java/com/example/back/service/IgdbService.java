@@ -5,6 +5,7 @@ import com.example.back.dto.ImportResult;
 import com.example.back.dto.JeuResponse;
 import com.example.back.dto.ResponseMapper;
 import com.example.back.entities.Jeu;
+import com.example.back.exception.NotFoundException;
 import com.example.back.repository.JeuRepository;
 import com.example.back.repository.JeuSpecification;
 import org.slf4j.Logger;
@@ -62,6 +63,15 @@ public class IgdbService {
     @CacheEvict(value = "recherches-igdb", allEntries = true)
     public void viderCacheRecherches() {
         // Corps vide intentionnellement — l'annotation fait le travail
+    }
+
+    /**
+     * Récupère un jeu par son ID local (BDD interne).
+     */
+    public JeuResponse getJeuById(Long id) {
+        Jeu jeu = jeuRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Jeu introuvable"));
+        return ResponseMapper.toJeuResponse(jeu);
     }
 
     public JeuResponse importerJeu(Long igdbId) {

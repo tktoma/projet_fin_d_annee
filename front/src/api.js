@@ -75,7 +75,6 @@ async function json(path, options = {}) {
         }
         throw { status: res.status, message: err.message || 'Erreur inconnue' };
     }
-    // 204 No Content
     if (res.status === 204) return null;
     return res.json();
 }
@@ -132,6 +131,8 @@ export const jeux = {
         json(`/jeux/recherche?titre=${encodeURIComponent(titre)}`, {
             method: 'POST',
         }),
+
+    getById: (id) => json(`/jeux/${id}`),
 
     importer: (igdbId) =>
         json(`/jeux/importer/${igdbId}`, { method: 'POST' }),
@@ -196,4 +197,42 @@ export const utilisateurs = {
     profil: (id) => json(`/users/${id}/profil`),
     avis: (id) => json(`/users/${id}/avis`),
     bibliotheque: (id) => json(`/users/${id}/bibliotheque`),
+};
+
+// ── Avatar ────────────────────────────────────────────────────────────────────
+
+export const avatar = {
+    get: (userId) => json(`/utilisateurs/${userId}/avatar`),
+
+    upload: async (file) => {
+        const token = getToken();
+        const formData = new FormData();
+        formData.append('fichier', file);
+        const res = await fetch(`${BASE_URL}/utilisateurs/moi/avatar`, {
+            method: 'POST',
+            headers: {
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: formData,
+        });
+        if (!res.ok) {
+            let err;
+            try { err = await res.json(); } catch { err = { message: `Erreur ${res.status}` }; }
+            throw { status: res.status, message: err.message || 'Erreur upload' };
+        }
+        return res.json();
+    },
+
+    supprimer: () =>
+        json('/utilisateurs/moi/avatar', { method: 'DELETE' }),
+};
+
+// ── Reports ───────────────────────────────────────────────────────────────────
+
+export const reports = {
+    soumettre: (data) =>
+        json('/reports', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }),
 };

@@ -27,12 +27,6 @@ public class JeuController {
 
     /**
      * Liste paginée avec filtres combinés, tous optionnels.
-     * GET /api/jeux                              → tous les jeux
-     * GET /api/jeux?genre=RPG                    → filtrer par genre
-     * GET /api/jeux?plateforme=PC                → filtrer par plateforme
-     * GET /api/jeux?noteMin=7.5                  → note moyenne >= 7.5
-     * GET /api/jeux?titre=zelda&genre=RPG&noteMin=8  → combiné
-     * GET /api/jeux?page=1&size=10&sort=noteMoyenne  → pagination et tri
      */
     @GetMapping
     public ResponseEntity<PageResponse<JeuResponse>> listerJeux(
@@ -61,6 +55,15 @@ public class JeuController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Récupère un jeu par son ID local.
+     * GET /api/jeux/{id}
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<JeuResponse> getJeuById(@PathVariable Long id) {
+        return ResponseEntity.ok(igdbService.getJeuById(id));
+    }
+
     @PostMapping("/importer/{igdbId}")
     @PreAuthorize("hasAnyRole('POSTER','ADMIN','SUPERADMIN')")
     public ResponseEntity<JeuResponse> importer(
@@ -85,6 +88,7 @@ public class JeuController {
                 "Import page " + page + " : " + result.getImportes()
                         + " jeux, total : " + result.getTotal());
     }
+
     @DeleteMapping("/cache")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     public ResponseEntity<Void> viderCache() {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
@@ -11,7 +11,9 @@ import {
 	Menu,
 	X,
 	User,
+	ChevronDown,
 } from 'lucide-react';
+import { avatar as avatarApi } from '../api.js';
 
 const NAV_LINKS = [
 	{ href: '/bibliotheque', label: 'Catalogue', icon: Library },
@@ -26,14 +28,25 @@ export const Navbar = () => {
 	const navigate = useNavigate();
 	const { user, isAuth, logout } = useAuth();
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [userMenuOpen, setUserMenuOpen] = useState(false);
+	const [avatarUrl, setAvatarUrl] = useState(null);
+
+	useEffect(() => {
+		if (!isAuth || !user) { setAvatarUrl(null); return; }
+		avatarApi.get(user.id)
+			.then((data) => { if (data?.url) setAvatarUrl(data.url); })
+			.catch(() => setAvatarUrl(null));
+	}, [isAuth, user]);
 
 	const handleLogout = () => {
 		logout();
+		setAvatarUrl(null);
 		navigate('/');
 		setMobileOpen(false);
+		setUserMenuOpen(false);
 	};
 
-	const isActive = (href) => pathname === href;
+	const isActive = (href) => pathname === href || pathname.startsWith(href + '/');
 
 	return (
 		<nav className="sticky top-0 z-50 bg-secondary-black border-b border-gray-800">
@@ -47,12 +60,12 @@ export const Navbar = () => {
 						onClick={() => setMobileOpen(false)}
 					>
 						<div className="w-9 h-9 bg-primary-red rounded-lg flex items-center justify-center
-                            group-hover:bg-secondary-red transition-colors duration-200">
+                                        group-hover:bg-secondary-red transition-colors duration-200">
 							<Gamepad2 className="w-5 h-5 text-white" />
 						</div>
 						<span className="text-white font-bold text-xl tracking-tight">
-              Game<span className="text-primary-red">Lib</span>
-            </span>
+                            Game<span className="text-primary-red">Lib</span>
+                        </span>
 					</Link>
 
 					{/* Desktop nav */}
@@ -62,7 +75,7 @@ export const Navbar = () => {
 								key={href}
 								to={href}
 								className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
-                  ${isActive(href)
+                                    ${isActive(href) && pathname !== '/'
 									? 'bg-primary-red text-white'
 									: 'text-gray-400 hover:text-white hover:bg-gray-800'
 								}`}
@@ -77,7 +90,7 @@ export const Navbar = () => {
 								key={href}
 								to={href}
 								className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
-                  ${isActive(href)
+                                    ${isActive(href)
 									? 'bg-primary-red text-white'
 									: 'text-gray-400 hover:text-white hover:bg-gray-800'
 								}`}
@@ -91,26 +104,57 @@ export const Navbar = () => {
 					{/* Desktop auth */}
 					<div className="hidden md:flex items-center gap-2">
 						{isAuth ? (
-							<>
-								<div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-gray-800 text-gray-300 text-sm">
-									<User className="w-3.5 h-3.5 text-primary-red" />
-									<span className="font-medium">{user?.pseudo}</span>
-								</div>
+							<div className="relative">
 								<button
-									onClick={handleLogout}
-									className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
-                             text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
+									onClick={() => setUserMenuOpen(!userMenuOpen)}
+									className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800
+                                               hover:bg-gray-700 text-gray-300 text-sm transition-colors"
 								>
-									<LogOut className="w-4 h-4" />
-									Déconnexion
+									{/* Avatar */}
+									<div className="w-6 h-6 rounded-full bg-accent-black border border-gray-600
+                                                    flex items-center justify-center overflow-hidden flex-shrink-0">
+										{avatarUrl ? (
+											<img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+										) : (
+											<span className="text-xs font-bold text-gray-400">
+                                                {user?.pseudo?.charAt(0).toUpperCase()}
+                                            </span>
+										)}
+									</div>
+									<span className="font-medium">{user?.pseudo}</span>
+									<ChevronDown className={`w-3.5 h-3.5 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
 								</button>
-							</>
+
+								{userMenuOpen && (
+									<div className="absolute right-0 top-full mt-1 w-44 bg-secondary-black
+                                                    border border-gray-700 rounded-xl overflow-hidden shadow-xl z-50">
+										<Link
+											to="/mon-profil"
+											onClick={() => setUserMenuOpen(false)}
+											className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300
+                                                       hover:bg-gray-800 hover:text-white transition-colors"
+										>
+											<User className="w-4 h-4" />
+											Mon profil
+										</Link>
+										<div className="border-t border-gray-800" />
+										<button
+											onClick={handleLogout}
+											className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm
+                                                       text-gray-400 hover:bg-gray-800 hover:text-red-400 transition-colors"
+										>
+											<LogOut className="w-4 h-4" />
+											Déconnexion
+										</button>
+									</div>
+								)}
+							</div>
 						) : (
 							<>
 								<Link
 									to="/connexion"
 									className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
-                    ${isActive('/connexion')
+                                        ${isActive('/connexion')
 										? 'bg-gray-700 text-white'
 										: 'text-gray-400 hover:text-white hover:bg-gray-800'
 									}`}
@@ -120,11 +164,8 @@ export const Navbar = () => {
 								</Link>
 								<Link
 									to="/inscription"
-									className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
-                    ${isActive('/inscription')
-										? 'bg-primary-red text-white'
-										: 'bg-primary-red text-white hover:bg-secondary-red'
-									}`}
+									className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
+                                               bg-primary-red text-white hover:bg-secondary-red transition-all duration-200"
 								>
 									<UserPlus className="w-4 h-4" />
 									S'inscrire
@@ -153,7 +194,7 @@ export const Navbar = () => {
 								to={href}
 								onClick={() => setMobileOpen(false)}
 								className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
-                  ${isActive(href)
+                                    ${isActive(href) && pathname !== '/'
 									? 'bg-primary-red text-white'
 									: 'text-gray-400 hover:text-white hover:bg-gray-800'
 								}`}
@@ -169,7 +210,7 @@ export const Navbar = () => {
 								to={href}
 								onClick={() => setMobileOpen(false)}
 								className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
-                  ${isActive(href)
+                                    ${isActive(href)
 									? 'bg-primary-red text-white'
 									: 'text-gray-400 hover:text-white hover:bg-gray-800'
 								}`}
@@ -182,14 +223,33 @@ export const Navbar = () => {
 						<div className="pt-2 border-t border-gray-800 space-y-1">
 							{isAuth ? (
 								<>
-									<div className="flex items-center gap-2 px-3 py-2 text-gray-300 text-sm">
-										<User className="w-4 h-4 text-primary-red" />
+									{/* Avatar mobile */}
+									<div className="flex items-center gap-3 px-3 py-2 text-gray-300 text-sm">
+										<div className="w-7 h-7 rounded-full bg-accent-black border border-gray-600
+                                                        flex items-center justify-center overflow-hidden flex-shrink-0">
+											{avatarUrl ? (
+												<img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+											) : (
+												<span className="text-xs font-bold text-gray-400">
+                                                    {user?.pseudo?.charAt(0).toUpperCase()}
+                                                </span>
+											)}
+										</div>
 										<span className="font-medium">{user?.pseudo}</span>
 									</div>
+									<Link
+										to="/mon-profil"
+										onClick={() => setMobileOpen(false)}
+										className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium
+                                                   text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+									>
+										<User className="w-4 h-4" />
+										Mon profil
+									</Link>
 									<button
 										onClick={handleLogout}
 										className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium
-                               text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                                                   text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
 									>
 										<LogOut className="w-4 h-4" />
 										Déconnexion
@@ -201,7 +261,7 @@ export const Navbar = () => {
 										to="/connexion"
 										onClick={() => setMobileOpen(false)}
 										className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium
-                               text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                                                   text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
 									>
 										<LogIn className="w-4 h-4" />
 										Connexion
@@ -210,7 +270,7 @@ export const Navbar = () => {
 										to="/inscription"
 										onClick={() => setMobileOpen(false)}
 										className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium
-                               bg-primary-red text-white hover:bg-secondary-red transition-colors"
+                                                   bg-primary-red text-white hover:bg-secondary-red transition-colors"
 									>
 										<UserPlus className="w-4 h-4" />
 										S'inscrire

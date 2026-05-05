@@ -5,22 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/MonProfil.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/ProfilUtilisateur.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/component/HeaderItem.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Connexion.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Inscription.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +89,8 @@
       <recent name="G:\projet\front\src\component" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\projet\front\src\pages" />
+      <recent name="G:\projet\front\src\component" />
       <recent name="G:\projet\front\src" />
       <recent name="G:\projet\back\src\test\resources" />
     </key>
@@ -222,6 +218,10 @@
       <workItem from="1777276587369" duration="1958000" />
       <workItem from="1777278596344" duration="12943000" />
       <workItem from="1777365303464" duration="4166000" />
+      <workItem from="1777451090528" duration="3977000" />
+      <workItem from="1777471959336" duration="593000" />
+      <workItem from="1777538017579" duration="1180000" />
+      <workItem from="1777631130257" duration="671000" />
     </task>
     <servers />
   </component>
