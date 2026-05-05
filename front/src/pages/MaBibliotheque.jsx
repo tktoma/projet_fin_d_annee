@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     BookMarked, Star, Loader2, Trash2, RefreshCw, Library,
 } from 'lucide-react';
-import { bibliotheque } from '../api.js';
+import { bibliotheque, notes as notesApi } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const STATUTS = [
@@ -19,12 +19,12 @@ function StatutBadge({ statut }) {
     if (!s || !s.color) return null;
     return (
         <span className={`text-xs font-medium px-2 py-0.5 rounded border ${s.bg} ${s.color}`}>
-      {s.label}
-    </span>
+            {s.label}
+        </span>
     );
 }
 
-function GameRow({ entry, onDelete, onChangeStatut }) {
+function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
     const [loadingStatut, setLoadingStatut] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
@@ -39,7 +39,9 @@ function GameRow({ entry, onDelete, onChangeStatut }) {
         }
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         setLoadingDelete(true);
         try {
             await onDelete(entry.jeuId);
@@ -50,22 +52,47 @@ function GameRow({ entry, onDelete, onChangeStatut }) {
 
     return (
         <div className="flex items-center gap-4 p-3 sm:p-4 bg-secondary-black border border-gray-800
-                    rounded-xl hover:border-gray-700 transition-colors group">
+                        rounded-xl hover:border-gray-700 transition-colors group">
             {/* Cover */}
-            <div className="w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-accent-black">
+            <Link
+                to={`/bibliotheque/${entry.jeuId}`}
+                className="w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-accent-black
+                           hover:opacity-80 transition-opacity"
+            >
                 {entry.jeuCoverUrl ? (
                     <img src={entry.jeuCoverUrl} alt={entry.jeuTitre} className="w-full h-full object-cover" />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-700 text-2xl">🎮</div>
                 )}
-            </div>
+            </Link>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-                <h3 className="text-white font-semibold text-sm sm:text-base truncate mb-1">
+                <Link
+                    to={`/bibliotheque/${entry.jeuId}`}
+                    className="block text-white font-semibold text-sm sm:text-base truncate mb-1
+                               hover:text-primary-red transition-colors"
+                >
                     {entry.jeuTitre}
-                </h3>
-                <StatutBadge statut={entry.statut} />
+                </Link>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                    <StatutBadge statut={entry.statut} />
+
+                    {/* Note personnelle */}
+                    {maNote != null ? (
+                        <span className="flex items-center gap-1 text-xs font-medium text-yellow-400">
+                            <Star className="w-3 h-3 fill-yellow-400" />
+                            {maNote}/10
+                        </span>
+                    ) : (
+                        <span className="flex items-center gap-1 text-xs text-gray-600">
+                            <Star className="w-3 h-3" />
+                            Non noté
+                        </span>
+                    )}
+                </div>
+
                 <p className="text-gray-600 text-xs mt-1.5">
                     Ajouté le {new Date(entry.date).toLocaleDateString('fr-FR')}
                 </p>
@@ -76,11 +103,11 @@ function GameRow({ entry, onDelete, onChangeStatut }) {
                 {/* Change statut */}
                 <div className="relative">
                     <button
-                        onClick={() => setShowMenu(!showMenu)}
+                        onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
                         disabled={loadingStatut}
                         className="p-2 rounded-lg border border-gray-700 text-gray-400
-                       hover:border-gray-500 hover:text-gray-300 transition-colors
-                       disabled:opacity-40"
+                                   hover:border-gray-500 hover:text-gray-300 transition-colors
+                                   disabled:opacity-40"
                         title="Changer le statut"
                     >
                         {loadingStatut ? (
@@ -91,7 +118,7 @@ function GameRow({ entry, onDelete, onChangeStatut }) {
                     </button>
                     {showMenu && (
                         <div className="absolute right-0 bottom-full mb-1 z-10 w-36
-                            bg-secondary-black border border-gray-700 rounded-xl overflow-hidden shadow-xl">
+                                        bg-secondary-black border border-gray-700 rounded-xl overflow-hidden shadow-xl">
                             {STATUTS.filter((s) => s.value !== 'ALL' && s.value !== entry.statut).map(({ value, label, color }) => (
                                 <button
                                     key={value}
@@ -110,8 +137,8 @@ function GameRow({ entry, onDelete, onChangeStatut }) {
                     onClick={handleDelete}
                     disabled={loadingDelete}
                     className="p-2 rounded-lg border border-gray-700 text-gray-600
-                     hover:border-red-800 hover:text-red-400 transition-colors
-                     disabled:opacity-40"
+                               hover:border-red-800 hover:text-red-400 transition-colors
+                               disabled:opacity-40"
                     title="Supprimer"
                 >
                     {loadingDelete ? (
@@ -129,6 +156,7 @@ export const MaBibliotheque = () => {
     const { isAuth } = useAuth();
     const navigate = useNavigate();
     const [entries, setEntries] = useState([]);
+    const [mesNotes, setMesNotes] = useState({}); // jeuId -> valeur
     const [loading, setLoading] = useState(true);
     const [activeStatut, setActiveStatut] = useState('ALL');
 
@@ -137,16 +165,29 @@ export const MaBibliotheque = () => {
             navigate('/connexion');
             return;
         }
-        fetchBibliotheque();
+        fetchAll();
     }, [isAuth]);
 
-    const fetchBibliotheque = async () => {
+    const fetchAll = async () => {
         setLoading(true);
         try {
-            const data = await bibliotheque.maBibliotheque();
-            setEntries(data || []);
-        } catch {
-            setEntries([]);
+            const [bibData, notesData] = await Promise.allSettled([
+                bibliotheque.maBibliotheque(),
+                notesApi.mesNotes(),
+            ]);
+
+            if (bibData.status === 'fulfilled') {
+                setEntries(bibData.value || []);
+            }
+
+            if (notesData.status === 'fulfilled' && notesData.value) {
+                // Construire un map jeuId -> valeur pour lookup O(1)
+                const map = {};
+                for (const n of notesData.value) {
+                    map[n.jeuId] = n.valeur;
+                }
+                setMesNotes(map);
+            }
         } finally {
             setLoading(false);
         }
@@ -168,7 +209,6 @@ export const MaBibliotheque = () => {
         ? entries
         : entries.filter((e) => e.statut === activeStatut);
 
-    // Stats
     const stats = STATUTS.filter((s) => s.value !== 'ALL').map((s) => ({
         ...s,
         count: entries.filter((e) => e.statut === s.value).length,
@@ -198,7 +238,6 @@ export const MaBibliotheque = () => {
                 </div>
 
                 {entries.length === 0 ? (
-                    /* État vide */
                     <div className="text-center py-20 border border-gray-800 rounded-2xl bg-secondary-black">
                         <Library className="w-12 h-12 text-gray-700 mx-auto mb-4" />
                         <p className="text-gray-400 font-semibold mb-2">Votre bibliothèque est vide</p>
@@ -208,8 +247,8 @@ export const MaBibliotheque = () => {
                         <Link
                             to="/bibliotheque"
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg
-                         bg-primary-red hover:bg-secondary-red text-white text-sm font-semibold
-                         transition-colors"
+                                       bg-primary-red hover:bg-secondary-red text-white text-sm font-semibold
+                                       transition-colors"
                         >
                             <Library className="w-4 h-4" />
                             Explorer le catalogue
@@ -234,7 +273,7 @@ export const MaBibliotheque = () => {
                                     key={value}
                                     onClick={() => setActiveStatut(value)}
                                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
-                    ${activeStatut === value
+                                        ${activeStatut === value
                                         ? 'bg-primary-red text-white'
                                         : 'border border-gray-700 text-gray-400 hover:border-gray-500 hover:text-gray-300'
                                     }`}
@@ -242,8 +281,8 @@ export const MaBibliotheque = () => {
                                     {label}
                                     {value !== 'ALL' && (
                                         <span className={`ml-1.5 text-xs ${activeStatut === value ? 'text-red-200' : 'text-gray-600'}`}>
-                      {entries.filter((e) => e.statut === value).length}
-                    </span>
+                                            {entries.filter((e) => e.statut === value).length}
+                                        </span>
                                     )}
                                 </button>
                             ))}
@@ -260,6 +299,7 @@ export const MaBibliotheque = () => {
                                     <GameRow
                                         key={entry.id}
                                         entry={entry}
+                                        maNote={mesNotes[entry.jeuId] ?? null}
                                         onDelete={handleDelete}
                                         onChangeStatut={handleChangeStatut}
                                     />

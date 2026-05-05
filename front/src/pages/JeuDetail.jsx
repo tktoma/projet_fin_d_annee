@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
     Star, ArrowLeft, Plus, ThumbsUp, ThumbsDown, Trash2,
-    Loader2, Flag, BookMarked, Send
+    Loader2, Flag, BookMarked, Send, ChevronDown, ChevronUp
 } from 'lucide-react';
 import { jeux, avis as avisApi, notes as notesApi, bibliotheque, reports } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -123,6 +123,35 @@ function AvisCard({ avis, isOwn, onLike, onDelete, isAuth, onReport }) {
             {reportOpen && (
                 <ReportModal onClose={() => setReportOpen(false)}
                              onSubmit={(r, d) => onReport(avis.id, r, d)} />
+            )}
+        </div>
+    );
+}
+
+// Description avec "Voir plus / Voir moins"
+function Description({ text }) {
+    const [expanded, setExpanded] = useState(false);
+    const LIMIT = 300;
+    const isLong = text && text.length > LIMIT;
+    const displayed = isLong && !expanded ? text.slice(0, LIMIT) + '…' : text;
+
+    return (
+        <div className="bg-secondary-black border border-gray-800 rounded-xl p-5 mb-8">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                Description
+            </h2>
+            <p className="text-gray-300 text-sm leading-relaxed">{displayed}</p>
+            {isLong && (
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mt-2 flex items-center gap-1 text-xs text-primary-red hover:text-accent-red transition-colors font-medium"
+                >
+                    {expanded ? (
+                        <><ChevronUp className="w-3.5 h-3.5" />Voir moins</>
+                    ) : (
+                        <><ChevronDown className="w-3.5 h-3.5" />Voir plus</>
+                    )}
+                </button>
             )}
         </div>
     );
@@ -251,7 +280,7 @@ export const JeuDetail = () => {
                 </button>
 
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row gap-6 mb-10">
+                <div className="flex flex-col sm:flex-row gap-6 mb-8">
                     <div className="w-40 h-56 flex-shrink-0 rounded-xl overflow-hidden bg-accent-black self-start">
                         {jeu.coverUrl
                             ? <img src={jeu.coverUrl} alt={jeu.titre} className="w-full h-full object-cover"/>
@@ -313,6 +342,9 @@ export const JeuDetail = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Description */}
+                {jeu.description && <Description text={jeu.description} />}
 
                 {/* Avis */}
                 <div>

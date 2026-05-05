@@ -15,4 +15,5 @@ public class JeuResponse {
     private float noteMoyenne;
     private String source;
     private String externalId;
+    private String description;
 }

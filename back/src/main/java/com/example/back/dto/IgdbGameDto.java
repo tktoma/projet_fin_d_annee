@@ -15,6 +15,9 @@ public class IgdbGameDto {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("summary")
+    private String summary;
+
     @JsonProperty("cover")
     private Cover cover;
 
@@ -45,9 +48,3 @@ public class IgdbGameDto {
         private String url;
     }
 }
-
-
-
-
-
-

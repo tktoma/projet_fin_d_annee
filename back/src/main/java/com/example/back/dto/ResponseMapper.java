@@ -28,6 +28,7 @@ public class ResponseMapper {
         dto.setNoteMoyenne(j.getNoteMoyenne());
         dto.setSource(j.getSource());
         dto.setExternalId(j.getExternalId());
+        dto.setDescription(j.getDescription());
         return dto;
     }
 

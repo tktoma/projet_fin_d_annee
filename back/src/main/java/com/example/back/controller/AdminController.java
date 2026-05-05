@@ -4,6 +4,7 @@ import com.example.back.dto.UtilisateurResponse;
 import com.example.back.entities.Role;
 import com.example.back.entities.Utilisateur;
 import com.example.back.service.AdminService;
+import com.example.back.service.JeuMigrationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,16 +17,18 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+    private final JeuMigrationService jeuMigrationService;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService,
+                           JeuMigrationService jeuMigrationService) {
         this.adminService = adminService;
+        this.jeuMigrationService = jeuMigrationService;
     }
 
     @GetMapping("/utilisateurs")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     public ResponseEntity<List<UtilisateurResponse>> listerUsers() {
-        return ResponseEntity.ok(
-                adminService.listerUtilisateurs());
+        return ResponseEntity.ok(adminService.listerUtilisateurs());
     }
 
     @PutMapping("/utilisateurs/{id}/role")
@@ -35,8 +38,7 @@ public class AdminController {
             @RequestParam Role role,
             Authentication auth) {
         Utilisateur demandeur = (Utilisateur) auth.getPrincipal();
-        return ResponseEntity.ok(
-                adminService.changerRole(id, role, demandeur));
+        return ResponseEntity.ok(adminService.changerRole(id, role, demandeur));
     }
 
     @DeleteMapping("/utilisateurs/{id}")
@@ -51,9 +53,19 @@ public class AdminController {
 
     @DeleteMapping("/avis/{avisId}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    public ResponseEntity<Void> supprimerAvis(
-            @PathVariable Long avisId) {
+    public ResponseEntity<Void> supprimerAvis(@PathVariable Long avisId) {
         adminService.supprimerAvis(avisId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Lance la mise à jour des descriptions manquantes depuis IGDB.
+     * S'exécute en arrière-plan (@Async).
+     */
+    @PostMapping("/jeux/enrichir-descriptions")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
+    public ResponseEntity<String> enrichirDescriptions() {
+        jeuMigrationService.enrichirDescriptions();
+        return ResponseEntity.ok("Enrichissement des descriptions lancé en arrière-plan");
     }
 }

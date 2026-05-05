@@ -3,7 +3,7 @@ package com.example.back.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
-import java.time.LocalDate;
+        import java.time.LocalDate;
 
 
 @Entity
@@ -32,4 +32,6 @@ public class Jeu extends BaseEntity{
     @Column
     private String externalId;     // id dans la BDD IGBD
 
+    @Column(length = 5000)
+    private String description;    // summary IGDB
 }

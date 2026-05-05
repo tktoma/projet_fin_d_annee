@@ -172,6 +172,7 @@ public class IgdbService {
         jeu.setTitre(dto.getName());
         jeu.setSource("igdb");
         jeu.setExternalId(String.valueOf(dto.getId()));
+        jeu.setDescription(dto.getSummary());
 
         if (dto.getCover() != null) {
             jeu.setCoverUrl("https:" + dto.getCover().getUrl()
