@@ -10,6 +10,7 @@ import com.example.back.exception.ConflictException;
 import com.example.back.exception.NotFoundException;
 import com.example.back.repository.BibliothequeRepository;
 import com.example.back.repository.JeuRepository;
+import com.example.back.repository.NoteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +22,17 @@ public class BibliothequeService {
 
     private final BibliothequeRepository bibliothequeRepository;
     private final JeuRepository jeuRepository;
+    private final NoteRepository noteRepository;
 
     public BibliothequeService(
             BibliothequeRepository bibliothequeRepository,
-            JeuRepository jeuRepository) {
+            JeuRepository jeuRepository,
+            NoteRepository noteRepository) {
         this.bibliothequeRepository = bibliothequeRepository;
         this.jeuRepository = jeuRepository;
+        this.noteRepository = noteRepository;
     }
 
-    /**
-     * Ajoute un jeu à la bibliothèque.
-     * Lève ConflictException si le jeu y est déjà — utiliser
-     * PUT /jeu/{jeuId}/statut pour changer le statut.
-     */
     @Transactional
     public BibliothequeDto ajouterJeu(Utilisateur utilisateur,
                                       Long jeuId,
@@ -47,8 +46,7 @@ public class BibliothequeService {
         }
 
         Jeu jeu = jeuRepository.findById(jeuId)
-                .orElseThrow(() ->
-                        new NotFoundException("Jeu introuvable"));
+                .orElseThrow(() -> new NotFoundException("Jeu introuvable"));
 
         Bibliotheque entree = new Bibliotheque();
         entree.setUtilisateur(utilisateur);
@@ -56,8 +54,7 @@ public class BibliothequeService {
         entree.setStatut(statut);
         entree.setDate(LocalDate.now());
 
-        return ResponseMapper.toBibliothequeDto(
-                bibliothequeRepository.save(entree));
+        return toDto(bibliothequeRepository.save(entree), utilisateur.getId());
     }
 
     @Transactional
@@ -65,20 +62,17 @@ public class BibliothequeService {
                                          Long jeuId,
                                          StatutJeu nouveauStatut) {
         Bibliotheque entree = bibliothequeRepository
-                .findByUtilisateurIdAndJeuId(
-                        utilisateur.getId(), jeuId)
-                .orElseThrow(() ->
-                        new NotFoundException("Jeu non trouvé dans la bibliothèque"));
+                .findByUtilisateurIdAndJeuId(utilisateur.getId(), jeuId)
+                .orElseThrow(() -> new NotFoundException("Jeu non trouvé dans la bibliothèque"));
         entree.setStatut(nouveauStatut);
-        return ResponseMapper.toBibliothequeDto(
-                bibliothequeRepository.save(entree));
+        return toDto(bibliothequeRepository.save(entree), utilisateur.getId());
     }
 
     public List<BibliothequeDto> getBibliotheque(Long utilisateurId) {
         return bibliothequeRepository
                 .findByUtilisateurId(utilisateurId)
                 .stream()
-                .map(ResponseMapper::toBibliothequeDto)
+                .map(b -> toDto(b, utilisateurId))
                 .toList();
     }
 
@@ -87,16 +81,26 @@ public class BibliothequeService {
         return bibliothequeRepository
                 .findByUtilisateurIdAndStatut(utilisateurId, statut)
                 .stream()
-                .map(ResponseMapper::toBibliothequeDto)
+                .map(b -> toDto(b, utilisateurId))
                 .toList();
     }
 
     public void supprimerJeu(Utilisateur utilisateur, Long jeuId) {
         Bibliotheque entree = bibliothequeRepository
-                .findByUtilisateurIdAndJeuId(
-                        utilisateur.getId(), jeuId)
-                .orElseThrow(() ->
-                        new NotFoundException("Entrée introuvable"));
+                .findByUtilisateurIdAndJeuId(utilisateur.getId(), jeuId)
+                .orElseThrow(() -> new NotFoundException("Entrée introuvable"));
         bibliothequeRepository.delete(entree);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper privé — enrichit le DTO avec la note de l'utilisateur
+    // -------------------------------------------------------------------------
+
+    private BibliothequeDto toDto(Bibliotheque b, Long utilisateurId) {
+        BibliothequeDto dto = ResponseMapper.toBibliothequeDto(b);
+        noteRepository
+                .findByUtilisateurIdAndJeuId(utilisateurId, b.getJeu().getId())
+                .ifPresent(n -> dto.setMaNote(n.getValeur()));
+        return dto;
     }
 }

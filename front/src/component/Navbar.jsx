@@ -12,6 +12,7 @@ import {
 	X,
 	User,
 	ChevronDown,
+	Download,
 } from 'lucide-react';
 import { avatar as avatarApi } from '../api.js';
 
@@ -23,6 +24,19 @@ const AUTH_LINKS = [
 	{ href: '/ma_bibliotheque', label: 'Ma Bibliothèque', icon: BookMarked },
 ];
 
+const IMPORT_ROLES = ['POSTER', 'ADMIN', 'SUPERADMIN'];
+
+function getRoleFromToken() {
+	const token = localStorage.getItem('token');
+	if (!token) return null;
+	try {
+		const payload = JSON.parse(atob(token.split('.')[1]));
+		return payload.role || null;
+	} catch {
+		return null;
+	}
+}
+
 export const Navbar = () => {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
@@ -30,6 +44,9 @@ export const Navbar = () => {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [userMenuOpen, setUserMenuOpen] = useState(false);
 	const [avatarUrl, setAvatarUrl] = useState(null);
+
+	const role = isAuth ? getRoleFromToken() : null;
+	const canImport = role && IMPORT_ROLES.includes(role);
 
 	useEffect(() => {
 		if (!isAuth || !user) { setAvatarUrl(null); return; }
@@ -99,6 +116,21 @@ export const Navbar = () => {
 								{label}
 							</Link>
 						))}
+
+						{/* Lien Import — rôles autorisés seulement */}
+						{isAuth && canImport && (
+							<Link
+								to="/import"
+								className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
+                                    ${isActive('/import')
+									? 'bg-primary-red text-white'
+									: 'text-gray-400 hover:text-white hover:bg-gray-800'
+								}`}
+							>
+								<Download className="w-4 h-4" />
+								Importer
+							</Link>
+						)}
 					</div>
 
 					{/* Desktop auth */}
@@ -110,7 +142,6 @@ export const Navbar = () => {
 									className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800
                                                hover:bg-gray-700 text-gray-300 text-sm transition-colors"
 								>
-									{/* Avatar */}
 									<div className="w-6 h-6 rounded-full bg-accent-black border border-gray-600
                                                     flex items-center justify-center overflow-hidden flex-shrink-0">
 										{avatarUrl ? (
@@ -137,6 +168,17 @@ export const Navbar = () => {
 											<User className="w-4 h-4" />
 											Mon profil
 										</Link>
+										{canImport && (
+											<Link
+												to="/import"
+												onClick={() => setUserMenuOpen(false)}
+												className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300
+                                                           hover:bg-gray-800 hover:text-white transition-colors"
+											>
+												<Download className="w-4 h-4" />
+												Importer un jeu
+											</Link>
+										)}
 										<div className="border-t border-gray-800" />
 										<button
 											onClick={handleLogout}
@@ -220,10 +262,24 @@ export const Navbar = () => {
 							</Link>
 						))}
 
+						{isAuth && canImport && (
+							<Link
+								to="/import"
+								onClick={() => setMobileOpen(false)}
+								className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                                    ${isActive('/import')
+									? 'bg-primary-red text-white'
+									: 'text-gray-400 hover:text-white hover:bg-gray-800'
+								}`}
+							>
+								<Download className="w-4 h-4" />
+								Importer
+							</Link>
+						)}
+
 						<div className="pt-2 border-t border-gray-800 space-y-1">
 							{isAuth ? (
 								<>
-									{/* Avatar mobile */}
 									<div className="flex items-center gap-3 px-3 py-2 text-gray-300 text-sm">
 										<div className="w-7 h-7 rounded-full bg-accent-black border border-gray-600
                                                         flex items-center justify-center overflow-hidden flex-shrink-0">

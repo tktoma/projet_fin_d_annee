@@ -12,4 +12,5 @@ public class BibliothequeDto {
     private String jeuCoverUrl;
     private StatutJeu statut;
     private LocalDate date;
+    private Float maNote;
 }

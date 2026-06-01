@@ -9,6 +9,7 @@ import { Inscription } from './pages/Inscription.jsx';
 import { JeuDetail } from './pages/JeuDetail.jsx';
 import { ProfilUtilisateur } from './pages/ProfilUtilisateur.jsx';
 import { MonProfil } from './pages/MonProfil.jsx';
+import { ImportJeux } from './pages/ImportJeux.jsx';
 
 function Root() {
     return (
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
             { path: 'inscription', element: <Inscription /> },
             { path: 'profil/:id', element: <ProfilUtilisateur /> },
             { path: 'mon-profil', element: <MonProfil /> },
+            { path: 'import', element: <ImportJeux /> },
         ],
     },
 ]);

@@ -5,15 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/JeuMigrationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ImportProgress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuManuelRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/ImportAutoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/ImportJeux.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/BackApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/BackApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/IgdbGameDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/IgdbGameDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/BibliothequeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/BibliothequeDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" afterDir="false" />
     </list>
@@ -34,6 +45,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.jdks/ms-21.0.11/lib/src.zip!/java.base/java/util/List.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
@@ -168,8 +182,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28539.33" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28539.33" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
       </set>
     </attachedChunks>
   </component>
@@ -224,6 +238,17 @@
       <workItem from="1777538017579" duration="1180000" />
       <workItem from="1777631130257" duration="671000" />
       <workItem from="1777970448075" duration="2044000" />
+      <workItem from="1778149169895" duration="1255000" />
+      <workItem from="1778233358565" duration="8758000" />
+      <workItem from="1778579263157" duration="4026000" />
+      <workItem from="1778612024501" duration="460000" />
+      <workItem from="1779351726883" duration="793000" />
+      <workItem from="1779352571064" duration="103000" />
+      <workItem from="1779436870642" duration="1246000" />
+      <workItem from="1779696943161" duration="677000" />
+      <workItem from="1779793848480" duration="1168000" />
+      <workItem from="1780042069940" duration="666000" />
+      <workItem from="1780304707814" duration="1640000" />
     </task>
     <servers />
   </component>

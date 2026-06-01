@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     BookMarked, Star, Loader2, Trash2, RefreshCw, Library,
 } from 'lucide-react';
-import { bibliotheque, notes as notesApi } from '../api.js';
+import { bibliotheque } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const STATUTS = [
@@ -24,7 +24,7 @@ function StatutBadge({ statut }) {
     );
 }
 
-function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
+function GameRow({ entry, onDelete, onChangeStatut }) {
     const [loadingStatut, setLoadingStatut] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
@@ -56,8 +56,8 @@ function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
             {/* Cover */}
             <Link
                 to={`/bibliotheque/${entry.jeuId}`}
-                className="w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-accent-black
-                           hover:opacity-80 transition-opacity"
+                className="w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden
+                           bg-accent-black hover:opacity-80 transition-opacity"
             >
                 {entry.jeuCoverUrl ? (
                     <img src={entry.jeuCoverUrl} alt={entry.jeuTitre} className="w-full h-full object-cover" />
@@ -76,14 +76,13 @@ function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
                     {entry.jeuTitre}
                 </Link>
 
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
                     <StatutBadge statut={entry.statut} />
 
-                    {/* Note personnelle */}
-                    {maNote != null ? (
+                    {entry.maNote != null ? (
                         <span className="flex items-center gap-1 text-xs font-medium text-yellow-400">
                             <Star className="w-3 h-3 fill-yellow-400" />
-                            {maNote}/10
+                            {entry.maNote}/10
                         </span>
                     ) : (
                         <span className="flex items-center gap-1 text-xs text-gray-600">
@@ -93,14 +92,13 @@ function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
                     )}
                 </div>
 
-                <p className="text-gray-600 text-xs mt-1.5">
+                <p className="text-gray-600 text-xs">
                     Ajouté le {new Date(entry.date).toLocaleDateString('fr-FR')}
                 </p>
             </div>
 
             {/* Actions */}
             <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Change statut */}
                 <div className="relative">
                     <button
                         onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
@@ -118,12 +116,14 @@ function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
                     </button>
                     {showMenu && (
                         <div className="absolute right-0 bottom-full mb-1 z-10 w-36
-                                        bg-secondary-black border border-gray-700 rounded-xl overflow-hidden shadow-xl">
+                                        bg-secondary-black border border-gray-700 rounded-xl
+                                        overflow-hidden shadow-xl">
                             {STATUTS.filter((s) => s.value !== 'ALL' && s.value !== entry.statut).map(({ value, label, color }) => (
                                 <button
                                     key={value}
                                     onClick={() => handleChangeStatut(value)}
-                                    className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-800 transition-colors ${color}`}
+                                    className={`w-full px-3 py-2 text-left text-xs font-medium
+                                                hover:bg-gray-800 transition-colors ${color}`}
                                 >
                                     {label}
                                 </button>
@@ -132,7 +132,6 @@ function GameRow({ entry, maNote, onDelete, onChangeStatut }) {
                     )}
                 </div>
 
-                {/* Delete */}
                 <button
                     onClick={handleDelete}
                     disabled={loadingDelete}
@@ -156,7 +155,6 @@ export const MaBibliotheque = () => {
     const { isAuth } = useAuth();
     const navigate = useNavigate();
     const [entries, setEntries] = useState([]);
-    const [mesNotes, setMesNotes] = useState({}); // jeuId -> valeur
     const [loading, setLoading] = useState(true);
     const [activeStatut, setActiveStatut] = useState('ALL');
 
@@ -165,29 +163,16 @@ export const MaBibliotheque = () => {
             navigate('/connexion');
             return;
         }
-        fetchAll();
+        fetchBibliotheque();
     }, [isAuth]);
 
-    const fetchAll = async () => {
+    const fetchBibliotheque = async () => {
         setLoading(true);
         try {
-            const [bibData, notesData] = await Promise.allSettled([
-                bibliotheque.maBibliotheque(),
-                notesApi.mesNotes(),
-            ]);
-
-            if (bibData.status === 'fulfilled') {
-                setEntries(bibData.value || []);
-            }
-
-            if (notesData.status === 'fulfilled' && notesData.value) {
-                // Construire un map jeuId -> valeur pour lookup O(1)
-                const map = {};
-                for (const n of notesData.value) {
-                    map[n.jeuId] = n.valeur;
-                }
-                setMesNotes(map);
-            }
+            const data = await bibliotheque.maBibliotheque();
+            setEntries(data || []);
+        } catch {
+            setEntries([]);
         } finally {
             setLoading(false);
         }
@@ -226,7 +211,6 @@ export const MaBibliotheque = () => {
         <div className="min-h-screen bg-primary-black">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-                {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-1">
                         <BookMarked className="w-6 h-6 text-primary-red" />
@@ -256,7 +240,6 @@ export const MaBibliotheque = () => {
                     </div>
                 ) : (
                     <>
-                        {/* Stats */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                             {stats.map(({ label, count, color, bg }) => (
                                 <div key={label} className={`p-3 rounded-xl border ${bg} text-center`}>
@@ -266,7 +249,6 @@ export const MaBibliotheque = () => {
                             ))}
                         </div>
 
-                        {/* Filtres */}
                         <div className="flex flex-wrap gap-2 mb-5">
                             {STATUTS.map(({ value, label }) => (
                                 <button
@@ -288,7 +270,6 @@ export const MaBibliotheque = () => {
                             ))}
                         </div>
 
-                        {/* Liste */}
                         {filtered.length === 0 ? (
                             <div className="text-center py-12 text-gray-600">
                                 Aucun jeu dans cette catégorie
@@ -299,7 +280,6 @@ export const MaBibliotheque = () => {
                                     <GameRow
                                         key={entry.id}
                                         entry={entry}
-                                        maNote={mesNotes[entry.jeuId] ?? null}
                                         onDelete={handleDelete}
                                         onChangeStatut={handleChangeStatut}
                                     />

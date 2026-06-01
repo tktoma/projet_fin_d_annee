@@ -6,8 +6,7 @@ public class ResponseMapper {
 
     private ResponseMapper() {}
 
-    public static UtilisateurResponse toUtilisateurResponse(
-            Utilisateur u) {
+    public static UtilisateurResponse toUtilisateurResponse(Utilisateur u) {
         UtilisateurResponse dto = new UtilisateurResponse();
         dto.setId(u.getId());
         dto.setPseudo(u.getPseudo());
@@ -29,6 +28,8 @@ public class ResponseMapper {
         dto.setSource(j.getSource());
         dto.setExternalId(j.getExternalId());
         dto.setDescription(j.getDescription());
+        dto.setVues(j.getVues());
+        // nbBibliotheque et statutStats remplis séparément dans IgdbService.getJeuById()
         return dto;
     }
 
@@ -60,6 +61,7 @@ public class ResponseMapper {
         dto.setNoteModerateur(r.getNoteModerateur());
         return dto;
     }
+
     public static AvisDto toAvisDto(Avis a) {
         AvisDto dto = new AvisDto();
         dto.setId(a.getId());
