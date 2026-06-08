@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
     Star, ArrowLeft, Plus, ThumbsUp, ThumbsDown, Trash2,
@@ -29,6 +29,7 @@ function ReportModal({ titre, onClose, onSubmit }) {
     const [raison, setRaison]   = useState('CONTENU_INAPPROPRIE');
     const [details, setDetails] = useState('');
     const [loading, setLoading] = useState(false);
+    const hasTrackedView = useRef(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); setLoading(true);

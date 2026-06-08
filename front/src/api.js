@@ -143,4 +143,8 @@ export const avatar = {
 
 export const reports = {
     soumettre: (data) => json('/reports', { method: 'POST', body: JSON.stringify(data) }),
+    listerTous: () => json('/reports'),
+    parStatut: (statut) => json(`/reports/statut/${statut}`),
+    supprimer: (id) => json(`/reports/${id}`, { method: 'DELETE' }),
+    traiter: (id, data) => json(`/reports/${id}/traiter`, { method: 'PUT', body: JSON.stringify(data) }),
 };

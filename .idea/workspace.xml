@@ -5,28 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ImportProgress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuManuelRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/ImportAutoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/pages/ImportJeux.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/BibliothequeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/BibliothequeDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/JeuResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/dto/ResponseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/repository/JeuSpecification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/BibliothequeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/context/AuthContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/Bibliotheque.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/MaBibliotheque.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,6 +234,8 @@
       <workItem from="1779793848480" duration="1168000" />
       <workItem from="1780042069940" duration="666000" />
       <workItem from="1780304707814" duration="1640000" />
+      <workItem from="1780306587189" duration="319000" />
+      <workItem from="1780487225444" duration="1659000" />
     </task>
     <servers />
   </component>

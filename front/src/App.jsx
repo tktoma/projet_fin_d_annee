@@ -10,6 +10,7 @@ import { JeuDetail } from './pages/JeuDetail.jsx';
 import { ProfilUtilisateur } from './pages/ProfilUtilisateur.jsx';
 import { MonProfil } from './pages/MonProfil.jsx';
 import { ImportJeux } from './pages/ImportJeux.jsx';
+import { AdminReports } from './pages/AdminReports.jsx';
 
 function Root() {
     return (
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
             { path: 'profil/:id', element: <ProfilUtilisateur /> },
             { path: 'mon-profil', element: <MonProfil /> },
             { path: 'import', element: <ImportJeux /> },
+            { path: 'admin/reports', element: <AdminReports /> },
         ],
     },
 ]);

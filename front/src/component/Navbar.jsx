@@ -13,6 +13,7 @@ import {
 	User,
 	ChevronDown,
 	Download,
+	Flag,
 } from 'lucide-react';
 import { avatar as avatarApi } from '../api.js';
 
@@ -25,6 +26,7 @@ const AUTH_LINKS = [
 ];
 
 const IMPORT_ROLES = ['POSTER', 'ADMIN', 'SUPERADMIN'];
+const ADMIN_ROLES  = ['ADMIN', 'SUPERADMIN'];
 
 function getRoleFromToken() {
 	const token = localStorage.getItem('token');
@@ -45,8 +47,9 @@ export const Navbar = () => {
 	const [userMenuOpen, setUserMenuOpen] = useState(false);
 	const [avatarUrl, setAvatarUrl] = useState(null);
 
-	const role = isAuth ? getRoleFromToken() : null;
+	const role      = isAuth ? getRoleFromToken() : null;
 	const canImport = role && IMPORT_ROLES.includes(role);
+	const isAdmin   = role && ADMIN_ROLES.includes(role);
 
 	useEffect(() => {
 		if (!isAuth || !user) { setAvatarUrl(null); return; }
@@ -81,8 +84,8 @@ export const Navbar = () => {
 							<Gamepad2 className="w-5 h-5 text-white" />
 						</div>
 						<span className="text-white font-bold text-xl tracking-tight">
-                            Game<span className="text-primary-red">Lib</span>
-                        </span>
+							Game<span className="text-primary-red">Lib</span>
+						</span>
 					</Link>
 
 					{/* Desktop nav */}
@@ -117,7 +120,6 @@ export const Navbar = () => {
 							</Link>
 						))}
 
-						{/* Lien Import — rôles autorisés seulement */}
 						{isAuth && canImport && (
 							<Link
 								to="/import"
@@ -148,8 +150,8 @@ export const Navbar = () => {
 											<img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
 										) : (
 											<span className="text-xs font-bold text-gray-400">
-                                                {user?.pseudo?.charAt(0).toUpperCase()}
-                                            </span>
+												{user?.pseudo?.charAt(0).toUpperCase()}
+											</span>
 										)}
 									</div>
 									<span className="font-medium">{user?.pseudo}</span>
@@ -157,7 +159,7 @@ export const Navbar = () => {
 								</button>
 
 								{userMenuOpen && (
-									<div className="absolute right-0 top-full mt-1 w-44 bg-secondary-black
+									<div className="absolute right-0 top-full mt-1 w-48 bg-secondary-black
                                                     border border-gray-700 rounded-xl overflow-hidden shadow-xl z-50">
 										<Link
 											to="/mon-profil"
@@ -168,6 +170,7 @@ export const Navbar = () => {
 											<User className="w-4 h-4" />
 											Mon profil
 										</Link>
+
 										{canImport && (
 											<Link
 												to="/import"
@@ -179,6 +182,22 @@ export const Navbar = () => {
 												Importer un jeu
 											</Link>
 										)}
+
+										{isAdmin && (
+											<Link
+												to="/admin/reports"
+												onClick={() => setUserMenuOpen(false)}
+												className={`flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors
+                                                    ${isActive('/admin/reports')
+													? 'bg-red-950 text-primary-red'
+													: 'text-gray-300 hover:bg-gray-800 hover:text-white'
+												}`}
+											>
+												<Flag className="w-4 h-4" />
+												Signalements
+											</Link>
+										)}
+
 										<div className="border-t border-gray-800" />
 										<button
 											onClick={handleLogout}
@@ -277,6 +296,21 @@ export const Navbar = () => {
 							</Link>
 						)}
 
+						{isAuth && isAdmin && (
+							<Link
+								to="/admin/reports"
+								onClick={() => setMobileOpen(false)}
+								className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                                    ${isActive('/admin/reports')
+									? 'bg-primary-red text-white'
+									: 'text-gray-400 hover:text-white hover:bg-gray-800'
+								}`}
+							>
+								<Flag className="w-4 h-4" />
+								Signalements
+							</Link>
+						)}
+
 						<div className="pt-2 border-t border-gray-800 space-y-1">
 							{isAuth ? (
 								<>
@@ -287,8 +321,8 @@ export const Navbar = () => {
 												<img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
 											) : (
 												<span className="text-xs font-bold text-gray-400">
-                                                    {user?.pseudo?.charAt(0).toUpperCase()}
-                                                </span>
+													{user?.pseudo?.charAt(0).toUpperCase()}
+												</span>
 											)}
 										</div>
 										<span className="font-medium">{user?.pseudo}</span>
