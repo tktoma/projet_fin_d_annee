@@ -119,4 +119,10 @@ public class JeuController {
         igdbService.viderCacheRecherches();
         return ResponseEntity.noContent().build();
     }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
+    public ResponseEntity<Void> supprimerJeu(@PathVariable Long id) {
+        igdbService.supprimerJeu(id);
+        return ResponseEntity.noContent().build();
+    }
 }

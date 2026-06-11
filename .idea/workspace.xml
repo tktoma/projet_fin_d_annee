@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/component/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/component/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Avis.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Avis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/pages/ProfilUtilisateur.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/ProfilUtilisateur.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +96,7 @@
       <recent name="G:\projet\back\src\test\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="Spring Boot.BackApplication">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
@@ -236,6 +237,10 @@
       <workItem from="1780304707814" duration="1640000" />
       <workItem from="1780306587189" duration="319000" />
       <workItem from="1780487225444" duration="1659000" />
+      <workItem from="1780906476560" duration="2387000" />
+      <workItem from="1781005011670" duration="1170000" />
+      <workItem from="1781079763938" duration="311000" />
+      <workItem from="1781080393812" duration="101000" />
     </task>
     <servers />
   </component>

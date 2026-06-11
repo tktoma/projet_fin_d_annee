@@ -268,4 +268,9 @@ public class IgdbService {
                     .atZone(ZoneId.systemDefault()).toLocalDate());
         return jeu;
     }
+    public void supprimerJeu(Long id) {
+        Jeu jeu = jeuRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Jeu introuvable"));
+        jeuRepository.delete(jeu);
+    }
 }

@@ -1,9 +1,10 @@
 package com.example.back.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -43,4 +44,22 @@ public class Jeu extends BaseEntity {
     /** Nombre de fois que la fiche détail a été consultée */
     @Column(nullable = false)
     private long vues = 0;
+
+    @OneToMany(mappedBy = "jeu",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Avis> avis = new ArrayList<>();
+
+    @OneToMany(mappedBy = "jeu",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Note> notes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "jeu",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Bibliotheque> bibliotheque = new ArrayList<>();
 }
