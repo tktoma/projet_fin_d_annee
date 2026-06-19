@@ -5,19 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/config/JwtUtilTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/config/RateLimitFilterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/GlobalExceptionHandlerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/IntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/dto/ResponseMapperTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/repository/RepositoryIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/AdminServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/AvisServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/BibliothequeServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/NoteServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/ReportServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/__tests__/Gamelib.test" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/__tests__/setup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/vite.config.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/2107ed0e-4554-47ab-859f-bf20de81d118.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2107ed0e-4554-47ab-859f-bf20de81d118.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/controller/JeuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Avis.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Avis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/entities/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/IgdbService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/AdminReports.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/JeuDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/pages/ProfilUtilisateur.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/pages/ProfilUtilisateur.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/test/resources/application-test.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/resources/application-test.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="160" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -39,6 +56,65 @@
     <commands />
     <urls />
   </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0" />
+      <entry key="M10" value="1.0" />
+      <entry key="M15" value="1.0" />
+      <entry key="M30" value="1.0" />
+      <entry key="H1" value="1.0" />
+      <entry key="H2" value="1.0" />
+      <entry key="H4" value="1.0" />
+      <entry key="D1" value="1.0" />
+      <entry key="W1" value="1.0" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.19888412093872965" />
+      <entry key="MS500" value="0.7239690861897795" />
+      <entry key="S2" value="0.9224227498856155" />
+      <entry key="S5" value="0.9682154360024704" />
+      <entry key="S10" value="0.983979387996756" />
+      <entry key="S30" value="0.9946310216590886" />
+      <entry key="S60" value="0.9973118978830487" />
+      <entry key="M2" value="0.9986550444888609" />
+      <entry key="M5" value="0.9994618005710635" />
+      <entry key="M10" value="0.9997308640684569" />
+      <entry key="M15" value="0.9998205679964363" />
+      <entry key="M30" value="0.9999102799733766" />
+      <entry key="H1" value="0.9999551389804328" />
+      <entry key="H2" value="0.9999775692386469" />
+      <entry key="H4" value="0.9999887845564304" />
+      <entry key="D1" value="0.9999981307506698" />
+      <entry key="W1" value="0.9999997329641674" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -49,8 +125,20 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;JUnit.AdminServiceTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AvisServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BackApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BibliothequeServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GlobalExceptionHandlerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IntegrationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.JwtUtilTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoteServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RateLimitFilterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ReportServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RepositoryIntegrationTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UtilisateurServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in back.executor&quot;: &quot;Run&quot;,
     &quot;Maven.Unnamed.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
@@ -66,21 +154,24 @@
     &quot;Spring Boot.Unnamed (1).executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.Unnamed.executor&quot;: &quot;Run&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/projet/front/src/pages&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/projet&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;C:/Users/thoma/OneDrive/Documents/node/node&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -90,14 +181,33 @@
       <recent name="G:\projet\front\src\component" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\projet\front" />
+      <recent name="G:\projet\front\src\__tests__" />
       <recent name="G:\projet\front\src\pages" />
       <recent name="G:\projet\front\src\component" />
       <recent name="G:\projet\front\src" />
-      <recent name="G:\projet\back\src\test\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.back.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BackApplication">
-    <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.IntegrationTest">
+    <configuration name="BackApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="back" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.back.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.back" />
+      <option name="MAIN_CLASS_NAME" value="com.example.back.BackApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
         <pattern>
@@ -106,7 +216,22 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.example.back.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.example.back.controller.AuthControllerTest" />
+      <option name="MAIN_CLASS_NAME" value="com.example.back.controller.IntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReportServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="back" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.back.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.back.service" />
+      <option name="MAIN_CLASS_NAME" value="com.example.back.service.ReportServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -127,9 +252,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="java in back" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="back" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/back/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BackApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="envFilePaths">
         <option value="$PROJECT_DIR$/back/.env" />
       </option>
@@ -148,28 +280,34 @@
       <scripts>
         <script value="dev" />
       </scripts>
-      <node-interpreter value="project" />
+      <node-interpreter value="$APPLICATION_CONFIG_DIR$/node/versions/24.16.0/node" />
       <envs />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.AuthControllerTest" />
+      <item itemvalue="JUnit.IntegrationTest" />
+      <item itemvalue="JUnit.BackApplicationTests" />
+      <item itemvalue="JUnit.ReportServiceTest" />
+      <item itemvalue="JUnit.java in back" />
       <item itemvalue="JUnit.UtilisateurServiceTest" />
       <item itemvalue="npm.dev" />
       <item itemvalue="Spring Boot.BackApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AuthControllerTest" />
+        <item itemvalue="JUnit.IntegrationTest" />
+        <item itemvalue="JUnit.java in back" />
+        <item itemvalue="JUnit.BackApplicationTests" />
         <item itemvalue="JUnit.UtilisateurServiceTest" />
+        <item itemvalue="JUnit.ReportServiceTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
       </set>
     </attachedChunks>
   </component>
@@ -241,6 +379,16 @@
       <workItem from="1781005011670" duration="1170000" />
       <workItem from="1781079763938" duration="311000" />
       <workItem from="1781080393812" duration="101000" />
+      <workItem from="1781202531116" duration="234000" />
+      <workItem from="1781202775152" duration="12000" />
+      <workItem from="1781202796262" duration="224000" />
+      <workItem from="1781203065906" duration="746000" />
+      <workItem from="1781476901965" duration="5663000" />
+      <workItem from="1781515087158" duration="892000" />
+      <workItem from="1781548906406" duration="433000" />
+      <workItem from="1781691349930" duration="525000" />
+      <workItem from="1781778839172" duration="403000" />
+      <workItem from="1781779258812" duration="2832000" />
     </task>
     <servers />
   </component>
@@ -262,5 +410,9 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/back" />
     </ignored-roots>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

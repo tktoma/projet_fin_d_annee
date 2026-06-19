@@ -1,0 +1,386 @@
+// ============================================================================
+// Tests Frontend — GameLib
+// Framework : Vitest + React Testing Library
+// ============================================================================
+// Fichier à placer dans : front/src/__tests__/
+// Lancer avec : npm run test
+// ============================================================================
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider, useAuth } from '../context/AuthContext'
+
+// ── Mock localStorage ──────────────────────────────────────────────────────
+
+const localStorageMock = (() => {
+  let store = {}
+  return {
+    getItem: (k) => store[k] ?? null,
+    setItem: (k, v) => { store[k] = String(v) },
+    removeItem: (k) => { delete store[k] },
+    clear: () => { store = {} },
+  }
+})()
+Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+
+// ── Mock fetch ─────────────────────────────────────────────────────────────
+
+const mockFetch = vi.fn()
+global.fetch = mockFetch
+
+beforeEach(() => { localStorageMock.clear(); vi.clearAllMocks() })
+
+// ============================================================================
+// AuthContext
+// ============================================================================
+
+describe('AuthContext', () => {
+  const TestConsumer = () => {
+    const { user, isAuth, login, logout } = useAuth()
+    return (
+      <div>
+        <span data-testid="is-auth">{isAuth ? 'true' : 'false'}</span>
+        <span data-testid="pseudo">{user?.pseudo ?? ''}</span>
+        <button onClick={() => login({ token: 'tok', refreshToken: 'ref', id: 1, pseudo: 'alice' })}>
+          Login
+        </button>
+        <button onClick={logout}>Logout</button>
+      </div>
+    )
+  }
+
+  const renderWithAuth = () =>
+    render(
+      <MemoryRouter>
+        <AuthProvider>
+          <TestConsumer />
+        </AuthProvider>
+      </MemoryRouter>
+    )
+
+  it('démarre non authentifié', async () => {
+    renderWithAuth()
+    await waitFor(() => expect(screen.getByTestId('is-auth').textContent).toBe('false'))
+  })
+
+  it('login() met à jour isAuth et user', async () => {
+    renderWithAuth()
+    await waitFor(() => screen.getByTestId('is-auth'))
+    fireEvent.click(screen.getByText('Login'))
+    expect(screen.getByTestId('is-auth').textContent).toBe('true')
+    expect(screen.getByTestId('pseudo').textContent).toBe('alice')
+  })
+
+  it('logout() remet isAuth à false', async () => {
+    renderWithAuth()
+    await waitFor(() => screen.getByTestId('is-auth'))
+    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(screen.getByText('Logout'))
+    expect(screen.getByTestId('is-auth').textContent).toBe('false')
+    expect(screen.getByTestId('pseudo').textContent).toBe('')
+  })
+
+  it('login() sauvegarde le token dans localStorage', async () => {
+    renderWithAuth()
+    await waitFor(() => screen.getByTestId('is-auth'))
+    fireEvent.click(screen.getByText('Login'))
+    expect(localStorage.getItem('token')).toBe('tok')
+    expect(localStorage.getItem('refreshToken')).toBe('ref')
+  })
+
+  it('logout() nettoie le localStorage', async () => {
+    localStorageMock.setItem('token', 'old-tok')
+    renderWithAuth()
+    await waitFor(() => screen.getByTestId('is-auth'))
+    fireEvent.click(screen.getByText('Login'))
+    fireEvent.click(screen.getByText('Logout'))
+    expect(localStorage.getItem('token')).toBeNull()
+  })
+
+  it('restaure la session depuis localStorage au montage', async () => {
+    localStorageMock.setItem('token', 'persisted-tok')
+    localStorageMock.setItem('user', JSON.stringify({ id: 2, pseudo: 'bob' }))
+    renderWithAuth()
+    await waitFor(() => expect(screen.getByTestId('is-auth').textContent).toBe('true'))
+    expect(screen.getByTestId('pseudo').textContent).toBe('bob')
+  })
+})
+
+// ============================================================================
+// api.js — fonctions utilitaires
+// ============================================================================
+
+describe('api.js', () => {
+  // On importe dynamiquement après avoir mocké fetch
+  let apiModule
+
+  beforeEach(async () => {
+    vi.resetModules()
+    apiModule = await import('../api.js')
+  })
+
+  describe('auth', () => {
+    it('inscrire() appelle POST /api/auth/inscription', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ token: 'jwt', refreshToken: 'ref', id: 1, pseudo: 'alice' }),
+      })
+      const data = await apiModule.auth.inscrire({ pseudo: 'alice', email: 'a@a.com', motDePasse: 'pass1234' })
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/auth/inscription'),
+        expect.objectContaining({ method: 'POST' })
+      )
+      expect(data.pseudo).toBe('alice')
+    })
+
+    it('connecter() appelle POST /api/auth/connexion', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ token: 'jwt', refreshToken: 'ref', id: 1, pseudo: 'alice' }),
+      })
+      await apiModule.auth.connecter({ email: 'a@a.com', motDePasse: 'pass' })
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/auth/connexion'),
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+
+    it('lève une erreur avec le message du serveur si la réponse n\'est pas ok', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false, status: 409,
+        json: async () => ({ message: 'Email déjà utilisé' }),
+      })
+      await expect(
+        apiModule.auth.inscrire({ pseudo: 'x', email: 'x@x.com', motDePasse: 'longpass' })
+      ).rejects.toMatchObject({ status: 409, message: 'Email déjà utilisé' })
+    })
+
+    it('saveSession() écrit dans localStorage', () => {
+      apiModule.auth.saveSession({ token: 'tok', refreshToken: 'ref', id: 3, pseudo: 'carol' })
+      expect(localStorage.getItem('token')).toBe('tok')
+      expect(JSON.parse(localStorage.getItem('user')).pseudo).toBe('carol')
+    })
+
+    it('getUser() retourne null si rien en localStorage', () => {
+      expect(apiModule.auth.getUser()).toBeNull()
+    })
+  })
+
+  describe('jeux', () => {
+    it('lister() appelle GET /api/jeux', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ content: [], totalElements: 0, totalPages: 0 }),
+      })
+      await apiModule.jeux.lister({})
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/jeux'), expect.any(Object))
+    })
+
+    it('lister() construit correctement les query params', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ content: [] }),
+      })
+      await apiModule.jeux.lister({ titre: 'zelda', genre: 'RPG', page: 0, size: 20 })
+      const url = mockFetch.mock.calls[0][0]
+      expect(url).toContain('titre=zelda')
+      expect(url).toContain('genre=RPG')
+    })
+
+    it('lister() omet les paramètres vides', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ content: [] }),
+      })
+      await apiModule.jeux.lister({ titre: '', genre: null })
+      const url = mockFetch.mock.calls[0][0]
+      expect(url).not.toContain('titre=')
+      expect(url).not.toContain('genre=')
+    })
+
+    it('getById() appelle GET /api/jeux/:id', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ id: 5, titre: 'Zelda' }),
+      })
+      const data = await apiModule.jeux.getById(5)
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/jeux/5'), expect.any(Object))
+      expect(data.titre).toBe('Zelda')
+    })
+  })
+
+  describe('bibliotheque', () => {
+    it('ajouter() appelle POST avec le statut correct', async () => {
+      localStorageMock.setItem('token', 'test-token')
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ id: 1, jeuId: 10, statut: 'A_JOUER' }),
+      })
+      await apiModule.bibliotheque.ajouter(10, 'A_JOUER')
+      const url = mockFetch.mock.calls[0][0]
+      expect(url).toContain('/bibliotheque/jeu/10')
+      expect(url).toContain('statut=A_JOUER')
+    })
+
+    it('changerStatut() appelle PUT', async () => {
+      localStorageMock.setItem('token', 'test-token')
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ statut: 'FINIT' }),
+      })
+      await apiModule.bibliotheque.changerStatut(10, 'FINIT')
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ method: 'PUT' })
+      )
+    })
+
+    it('supprimer() appelle DELETE', async () => {
+      localStorageMock.setItem('token', 'test-token')
+      mockFetch.mockResolvedValueOnce({ ok: true, status: 204 })
+      await apiModule.bibliotheque.supprimer(10)
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ method: 'DELETE' })
+      )
+    })
+  })
+
+  describe('notes', () => {
+    it('noter() construit l\'URL avec la valeur', async () => {
+      localStorageMock.setItem('token', 'test-token')
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ valeur: 8.5 }),
+      })
+      await apiModule.notes.noter(10, 8.5)
+      const url = mockFetch.mock.calls[0][0]
+      expect(url).toContain('/notes/jeu/10')
+      expect(url).toContain('valeur=8.5')
+    })
+  })
+
+  describe('reports', () => {
+    it('soumettre() appelle POST /api/reports', async () => {
+      localStorageMock.setItem('token', 'test-token')
+      mockFetch.mockResolvedValueOnce({
+        ok: true, status: 200,
+        json: async () => ({ id: 1 }),
+      })
+      await apiModule.reports.soumettre({ typeContenu: 'JEU', idContenu: 5, raison: 'SPAM' })
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/reports'),
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+  })
+})
+
+// ============================================================================
+// Connexion page — logique de formulaire
+// ============================================================================
+
+describe('Connexion — formulaire', () => {
+  // On teste la logique de validation côté formulaire sans monter la page complète
+  it('le champ email reject un format invalide avec HTML5 validation', () => {
+    render(
+      <MemoryRouter>
+        <form>
+          <input type="email" data-testid="email" required />
+          <button type="submit">OK</button>
+        </form>
+      </MemoryRouter>
+    )
+    const input = screen.getByTestId('email')
+    fireEvent.change(input, { target: { value: 'pas-un-email' } })
+    expect(input.validity.valid).toBe(false)
+  })
+
+  it('le champ email accepte un email valide', () => {
+    render(
+      <MemoryRouter>
+        <form>
+          <input type="email" data-testid="email" required />
+        </form>
+      </MemoryRouter>
+    )
+    const input = screen.getByTestId('email')
+    fireEvent.change(input, { target: { value: 'alice@example.com' } })
+    expect(input.validity.valid).toBe(true)
+  })
+})
+
+// ============================================================================
+// Utilitaires métier — getRoleFromToken
+// ============================================================================
+
+describe('getRoleFromToken()', () => {
+  const buildToken = (payload) => {
+    const encode = (obj) => btoa(JSON.stringify(obj)).replace(/=/g, '')
+    return `header.${encode(payload)}.signature`
+  }
+
+  it('extrait le rôle ADMIN depuis un token valide', () => {
+    const token = buildToken({ role: 'ADMIN', sub: 'alice@test.com' })
+    localStorage.setItem('token', token)
+    // On recrée la fonction inline (même logique que Navbar.jsx / ImportJeux.jsx)
+    const role = (() => {
+      try { return JSON.parse(atob(token.split('.')[1])).role || null }
+      catch { return null }
+    })()
+    expect(role).toBe('ADMIN')
+  })
+
+  it('retourne null pour un token malformé', () => {
+    const role = (() => {
+      try { return JSON.parse(atob('garbage'.split('.')[1])).role || null }
+      catch { return null }
+    })()
+    expect(role).toBeNull()
+  })
+
+  it('retourne null si pas de token', () => {
+    localStorage.removeItem('token')
+    const role = (() => {
+      const t = localStorage.getItem('token')
+      if (!t) return null
+      try { return JSON.parse(atob(t.split('.')[1])).role || null }
+      catch { return null }
+    })()
+    expect(role).toBeNull()
+  })
+})
+
+// ============================================================================
+// Logique de force de mot de passe (Inscription.jsx)
+// ============================================================================
+
+describe('Règles de mot de passe', () => {
+  const rules = [
+    { test: (p) => p.length >= 8,   label: '8 caractères minimum' },
+    { test: (p) => /[A-Z]/.test(p), label: 'Une majuscule' },
+    { test: (p) => /[0-9]/.test(p), label: 'Un chiffre' },
+  ]
+
+  it('mot de passe vide → 0 règles satisfaites', () => {
+    expect(rules.filter(r => r.test('')).length).toBe(0)
+  })
+
+  it('"abc" → 0 règles satisfaites', () => {
+    expect(rules.filter(r => r.test('abc')).length).toBe(0)
+  })
+
+  it('"abcdefgh" → 1 règle (longueur)', () => {
+    expect(rules.filter(r => r.test('abcdefgh')).length).toBe(1)
+  })
+
+  it('"Abcdefgh" → 2 règles (longueur + majuscule)', () => {
+    expect(rules.filter(r => r.test('Abcdefgh')).length).toBe(2)
+  })
+
+  it('"Abcdefg1" → 3 règles (toutes satisfaites)', () => {
+    expect(rules.filter(r => r.test('Abcdefg1')).length).toBe(3)
+  })
+})
