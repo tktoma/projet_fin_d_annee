@@ -5,27 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce198bf-5936-431c-97fc-c10348d50277" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/config/JwtUtilTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/config/RateLimitFilterTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/GlobalExceptionHandlerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/IntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/dto/ResponseMapperTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/repository/RepositoryIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/AdminServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/AvisServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/BibliothequeServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/NoteServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/service/ReportServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/__tests__/Gamelib.test" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/src/__tests__/setup.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/vite.config.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/2107ed0e-4554-47ab-859f-bf20de81d118.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2107ed0e-4554-47ab-859f-bf20de81d118.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/test/resources/application-test.properties" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/resources/application-test.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/example/back/service/UtilisateurService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/AuthControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/IntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/test/java/com/example/back/controller/IntegrationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +159,9 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\projet\front\src\pages" />
@@ -191,7 +178,7 @@
       <recent name="com.example.back.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.IntegrationTest">
+  <component name="RunManager" selected="JUnit.java in back">
     <configuration name="BackApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <extension name="coverage">
@@ -295,8 +282,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.IntegrationTest" />
         <item itemvalue="JUnit.java in back" />
+        <item itemvalue="JUnit.IntegrationTest" />
         <item itemvalue="JUnit.BackApplicationTests" />
         <item itemvalue="JUnit.UtilisateurServiceTest" />
         <item itemvalue="JUnit.ReportServiceTest" />
@@ -389,6 +376,8 @@
       <workItem from="1781691349930" duration="525000" />
       <workItem from="1781778839172" duration="403000" />
       <workItem from="1781779258812" duration="2832000" />
+      <workItem from="1781859803105" duration="494000" />
+      <workItem from="1781967583191" duration="2376000" />
     </task>
     <servers />
   </component>

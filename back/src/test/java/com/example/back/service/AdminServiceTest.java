@@ -68,7 +68,6 @@ class AdminServiceTest {
         void seul_superadmin_peut_creer_superadmin() {
             Utilisateur admin = user(1L, Role.ADMIN);
             Utilisateur cible = user(2L, Role.USER);
-            when(utilisateurRepository.findById(2L)).thenReturn(Optional.of(cible));
 
             assertThatThrownBy(() -> adminService.changerRole(2L, Role.SUPERADMIN, admin))
                     .isInstanceOf(ForbiddenException.class)

@@ -82,12 +82,12 @@ public class UtilisateurService {
     public AuthResponse connecter(LoginRequest request) {
         Utilisateur utilisateur = utilisateurRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("Identifiants invalides"));
+                .orElseThrow(() -> new NotFoundException("Email introuvable"));
 
         // BadCredentialsException → 401 via GlobalExceptionHandler
         if (!passwordEncoder.matches(
                 request.getMotDePasse(), utilisateur.getMdp())) {
-            throw new BadCredentialsException("Identifiants invalides");
+            throw new BadCredentialsException("Mot de passe incorrect");
         }
 
         return createAuthResponse(utilisateur);

@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.TestConfiguration;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -47,22 +48,17 @@ class AuthControllerTest {
     static final UtilisateurService SERVICE_MOCK =
             mock(UtilisateurService.class);
 
-    @Configuration
+    @TestConfiguration   // was @Configuration
     @EnableWebSecurity
     static class TestSecurityConfig {
-
         @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http)
-                throws Exception {
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http.csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(auth ->
                             auth.anyRequest().permitAll());
             return http.build();
         }
 
-        // Retourne exactement la même instance que SERVICE_MOCK
-        // → Spring injecte ce bean dans AuthController
-        // → les tests configurent when() sur ce même objet
         @Bean
         public UtilisateurService utilisateurService() {
             return SERVICE_MOCK;
@@ -271,10 +267,10 @@ class AuthControllerTest {
         }
 
         @Test
-        @DisplayName("500 si le refresh token est expiré ou invalide")
-        void refresh_500_tokenExpire() throws Exception {
+        @DisplayName("401 si le refresh token est expiré ou invalide")
+        void refresh_401_tokenExpire() throws Exception {
             when(SERVICE_MOCK.refreshToken(any()))
-                    .thenThrow(new RuntimeException("Refresh token expiré"));
+                    .thenThrow(new com.example.back.exception.TokenExpiredException("Refresh token expiré"));
 
             mockMvc.perform(post("/api/auth/refresh")
                             .contentType(MediaType.APPLICATION_JSON)
